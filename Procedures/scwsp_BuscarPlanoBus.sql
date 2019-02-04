@@ -1,4 +1,4 @@
-Create Procedure swcsp_BuscarPlanoBus
+Create Procedure scwsp_BuscarPlanoBus
 @Codi_Plano		Varchar(4)
 as
 Select Codigo,Tipo,Indice from dbo.Tb_PlanoBus 
