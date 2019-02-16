@@ -67,6 +67,11 @@ begin
 	AND  (dbo.Tb_Ruta_Intermedio.CODI_SUCURSAL=@Codi_Origen or @Codi_Origen=0 )
 	and (dst.CODI_SUCURSAL=@Codi_Destino  or @Codi_Destino =0)   
 	and CONVERT(DATETIME,Tb_Ruta_Intermedio.HORA_PASO,300)>=CONVERT(DATETIME,dateadd(mi,@Tiempo,@Hora ),300)
+	
+	--and dbo.Tb_Maestro_Programacion.TIPO_S = 0 -- Gerardo
+	and dbo.Tb_Maestro_Programacion.TR = 0 -- Gerardo
+	and dbo.Tb_Maestro_Programacion.TIPO_B = 1 -- Gerardo
+	
 	ORDER BY   
 	DATEPART(HOUR,Tb_Ruta_Intermedio.HORA_PASO),  
 	DATEPART(MINUTE,Tb_Ruta_Intermedio.HORA_PASO),  
