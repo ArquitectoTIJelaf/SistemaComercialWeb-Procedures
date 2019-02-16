@@ -43,18 +43,18 @@ Create Procedure scwsp_GrabarVenta
 @Codi_Arribo				SmallInt,
 @Hora_Embarque				Varchar(7),
 @Nivel_Asiento				TinyInt,
---Tb_BoletoxContrato
-@IdContrato					Int,
-@NroSolicitud				Varchar(30),
-@IdAreaContrato				Int,
-@Flg_Ida					Varchar(1),
-@Fecha_Cita					SmallDateTime,
-@Id_hospital				Int,
----Tb_Control
-@TipoSave					Int,
-@IdTabla					Int,
----Otros
-@Tipo_Transaccion			Varchar(1),
+----Tb_BoletoxContrato
+--@IdContrato					Int,
+--@NroSolicitud				Varchar(30),
+--@IdAreaContrato				Int,
+--@Flg_Ida					Varchar(1),
+--@Fecha_Cita					SmallDateTime,
+--@Id_hospital				Int,
+-----Tb_Control
+--@TipoSave					Int,
+--@IdTabla					Int,
+-----Otros
+--@Tipo_Transaccion			Varchar(1),
 @Codi_Terminal				SmallInt,
 @Id_Venta					Int Output
 as
@@ -181,63 +181,63 @@ Begin Try
 			End
 		Set @POSICION=2
 
-		If @Flag_Venta = '1'
-			Begin
-				--sp_help Tb_BoletoxContrato
-				Declare @Id_BoletoxContrato	Int
+		--If @Flag_Venta = '1'
+		--	Begin
+		--		--sp_help Tb_BoletoxContrato
+		--		Declare @Id_BoletoxContrato	Int
 				
-				Insert Into Tb_BoletoxContrato
-					(
-						idContrato,
-						nume_boleto,
-						st,
-						nume_solicitud,
-						idareacontrato,
-						idliquidacion,
-						fecha_emision,
-						fecha_viaje,
-						precio,
-						HoraViaje,
-						ID_VENTA,
-						Flg_Ida,
-						FECHA_CITA,
-						ID_HOSPITAL,
-						TIPO
-					)
-				Values
-				(
-					@IdContrato,
-					RIGHT('00'+LTRIM(@Serie_Boleto),3)+'-'+right('000000'+LTRIM(@Nume_Boleto),7),
-					'0',
-					@NroSolicitud,
-					@IdAreaContrato,
-					0,
-					convert(varchar,getdate(),103),
-					@Fecha_Viaje,
-					@Precio_Venta,
-					@Hora_Viaje,
-					@ID_VENTA,
-					@Flg_Ida,
-					@Fecha_Cita,
-					@Id_hospital,
-					@tipo
-				)
-				set @Id_BoletoxContrato=ident_current('Tb_BoletoxContrato')	
-				Insert Into tb_Control
-					(
-						tipoSave,
-						Idboletocontrato,
-						Idtabla
-					)
-				Values
-					(
-						@TipoSave,
-						@Id_BoletoxContrato,
-						@IdTabla
-					)
-			End
+		--		Insert Into Tb_BoletoxContrato
+		--			(
+		--				idContrato,
+		--				nume_boleto,
+		--				st,
+		--				nume_solicitud,
+		--				idareacontrato,
+		--				idliquidacion,
+		--				fecha_emision,
+		--				fecha_viaje,
+		--				precio,
+		--				HoraViaje,
+		--				ID_VENTA,
+		--				Flg_Ida,
+		--				FECHA_CITA,
+		--				ID_HOSPITAL,
+		--				TIPO
+		--			)
+		--		Values
+		--		(
+		--			@IdContrato,
+		--			RIGHT('00'+LTRIM(@Serie_Boleto),3)+'-'+right('000000'+LTRIM(@Nume_Boleto),7),
+		--			'0',
+		--			@NroSolicitud,
+		--			@IdAreaContrato,
+		--			0,
+		--			convert(varchar,getdate(),103),
+		--			@Fecha_Viaje,
+		--			@Precio_Venta,
+		--			@Hora_Viaje,
+		--			@ID_VENTA,
+		--			@Flg_Ida,
+		--			@Fecha_Cita,
+		--			@Id_hospital,
+		--			@tipo
+		--		)
+		--		set @Id_BoletoxContrato=ident_current('Tb_BoletoxContrato')	
+		--		Insert Into tb_Control
+		--			(
+		--				tipoSave,
+		--				Idboletocontrato,
+		--				Idtabla
+		--			)
+		--		Values
+		--			(
+		--				@TipoSave,
+		--				@Id_BoletoxContrato,
+		--				@IdTabla
+		--			)
+		--	End
 		Set @POSICION=3
-		If Not (@Tipo_Transaccion='M' or @Flag_Venta='X' or @Flag_Venta='R' or @Flag_Venta='9')
+		If Not (@Flag_Venta='X' or @Flag_Venta='R' or @Flag_Venta='9')
 			Begin
 				Declare @Tipo_Elect Varchar(1)
 				IF @Tipo<>'M' 
@@ -253,16 +253,16 @@ Begin Try
 				Update Tb_Correlativo_Documento
 				Set 
 					Numero=Numero+1
-				Where Codi_Empresa=@Codi_Empresa and 
-				Codi_Sucursal=@Codi_Oficina and
-				Codi_PuntoVenta=@Codi_PuntoVenta and
-				Terminal=@Codi_Terminal and
-				Codi_Documento=@Tipo and
-				Serie=@Serie_Boleto and
-				Tipo=@Tipo_Elect
+				Where	Codi_Empresa=@Codi_Empresa and 
+						Codi_Sucursal=@Codi_Oficina and
+						Codi_PuntoVenta=@Codi_PuntoVenta and
+						Terminal=@Codi_Terminal and
+						Codi_Documento=@Tipo and
+						Serie=@Serie_Boleto and
+						Tipo=@Tipo_Elect
 			End
-	Set @POSICION=4
-	Commit Transaction
+		Set @POSICION=4
+		Commit Transaction
 End Try
 Begin Catch
 	RollBack Transaction		
