@@ -9,6 +9,7 @@ Create Procedure scwsp_GrabarPasajero
 @Direccion			Varchar(100)	,
 @telefono			Varchar(15)		,
 @ruc_contacto 		Varchar(11)		,
+@sexo 			CHAR(1),
 @Id_Clientes		Int	Output
 as
 	Begin
@@ -23,7 +24,8 @@ as
 				edad			,
 				Direccion		,
 				telefono		,
-				ruc_contacto 
+				ruc_contacto 		,
+				sexo
 			)
 			Values(
 				@Tipo_Doc_Id	 ,
@@ -35,7 +37,8 @@ as
 				@edad			 ,
 				@Direccion		 ,
 				@telefono		 ,
-				@ruc_contacto 			
+				@ruc_contacto 		 ,
+				@sexo
 			)
 
 			Set @Id_Clientes=SCOPE_IDENTITY()
