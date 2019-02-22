@@ -13,7 +13,8 @@ as
 		edad			,
 		Direccion		,
 		telefono		,
-		ruc_contacto 
+		ruc_contacto	,
+		sexo
 	From Tb_Cliente_Pasajes
 	Where 
 		Tipo_Doc_id=@Tipo_Doc_Id and 

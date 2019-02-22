@@ -1,6 +1,4 @@
 Create Procedure scwsp_GrabarAuditoria 
-@Fecha				SmallDateTime,  
-@Hora				Varchar(15),  
 @Codi_Usuario		SmallInt,  
 @Nom_Usuario		Varchar(50),  
 @Tabla				Varchar(30),  
@@ -47,8 +45,8 @@ begin
 		)  
 	values  
 	(
-			@Fecha				,
-			@Hora				,
+			Convert(Varchar(10),getdate(),103)		,
+			Convert(Varchar(10),getdate(),108)		,
 			@Codi_Usuario		,
 			@Nom_Usuario		,
 			@Tabla				,

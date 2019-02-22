@@ -1,4 +1,4 @@
-Create Procedure scwsp_GrabarVenta
+Alter Procedure scwsp_GrabarVenta
 ---Venta
 @Serie_Boleto				SmallInt,
 @Nume_Boleto				Int,
@@ -15,53 +15,31 @@ Create Procedure scwsp_GrabarVenta
 @Nombre						Varchar(100),
 @Edad						TinyInt,
 @Telefono					Varchar(15),
-@Codi_Cliente				Real,
-@Fecha_Venta				SmallDateTime,
-@Reco_Venta					Varchar(50),
-@Clav_Usuario				SmallInt,
+@Codi_Usuario				SmallInt,
 @Dni						Varchar(15),
-@Codi_Esca					Varchar(13),
 @Tipo_Documento				Char(2),--Tipo Documento DNI/Pasaporte/Carnet de Extranjeria
 @Codi_Documento				Varchar(2),--Tipo Documento Factura/Bolera Venta
 @Tipo						Char(1),
-@Per_Autoriza				Char(2),
-@Estado_Asiento				Varchar(2),
 @Sexo						Char(1),
 @Tipo_Pago					Char(2),
-@Suc_Venta					SmallInt,
-@Vale_Remoto				Varchar(15),
-@Tipo_V						Char(1),
----Venta Derivada
+
+---VENTA DERIVADA
 @Fecha_Viaje				SmallDateTime,
 @Hora_Viaje					Varchar(10),
 @Nacionalidad				Varchar(30),
 @Codi_Servicio				TinyInt,
-@Porcentaje_IGV				Real,
-@Igv						Real,
-@SubTotal					Real,
 @Codi_Embarque				SmallInt,
 @Codi_Arribo				SmallInt,
 @Hora_Embarque				Varchar(7),
 @Nivel_Asiento				TinyInt,
-----Tb_BoletoxContrato
---@IdContrato					Int,
---@NroSolicitud				Varchar(30),
---@IdAreaContrato				Int,
---@Flg_Ida					Varchar(1),
---@Fecha_Cita					SmallDateTime,
---@Id_hospital				Int,
------Tb_Control
---@TipoSave					Int,
---@IdTabla					Int,
------Otros
---@Tipo_Transaccion			Varchar(1),
 @Codi_Terminal				SmallInt,
 @Id_Venta					Int Output
 as
 
 Begin Try
 		DECLARE @Hora_Venta AS VARCHAR(20),@POSICION INT 
-		
+		Declare @Porcentaje_IGV				Real
+		SELECT @Porcentaje_IGV=cast(Cod_Emp as Real) FROM tablas Where Nom_tab='IGV' and Cod_Tip='03'
 		SET @Hora_Venta=convert(varchar,GetDate(),108)
 		Set @POSICION=0
 		INSERT INTO VENTA 
@@ -107,32 +85,32 @@ Begin Try
 			@Codi_Oficina,
 			@Codi_Programacion,
 			@Codi_Destino,
-			@CODI_Cliente,
+			@Precio_Venta,
 			@Ruc_Cliente,
 			@Precio_Venta,
 			@Nume_Asiento,
 			@Flag_Venta,
-			@Fecha_Venta,
-			@Reco_Venta,
-			@Clav_Usuario,
+			Convert(Varchar(10),getdate(),103),
+			'',--@Reco_Venta,
+			@Codi_Usuario,
 			'F',
 			'01/01/1900'  ,
 			@Dni,
 			@Edad,
 			@Telefono,
 			@Nombre,
-			@Codi_Esca,
+			'',
 			@Codi_PuntoVenta,
 			@Tipo_Documento,
 			@Codi_Origen,
 			@Tipo, 
-			@Per_Autoriza,  
-			@Estado_Asiento,
+			'1',  
+			'N',
 			@Sexo,
 			@Tipo_Pago, 
-			@Suc_Venta, 
-			@Vale_Remoto,
-			@Tipo_V
+			@Codi_Oficina,--@Suc_Venta, 
+			'',--@Vale_Remoto,
+			'N'
 		)
 
 		Set @Id_Venta=SCOPE_IDENTITY()
@@ -168,8 +146,8 @@ Begin Try
 						@Nacionalidad,
 						@Codi_Servicio,
 						@Porcentaje_IGV,
-						@Igv,
-						@SubTotal,
+						((@Precio_Venta*@Porcentaje_IGV)/100),
+						((@Precio_Venta*(100-@Porcentaje_IGV))/100),
 						@Codi_Embarque,
 						@Codi_Arribo,
 						@Hora_Embarque,

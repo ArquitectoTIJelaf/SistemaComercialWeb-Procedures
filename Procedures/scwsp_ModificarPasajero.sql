@@ -9,8 +9,7 @@ Create Procedure scwsp_ModificarPasajero
 @edad				Tinyint			,
 @Direccion			Varchar(100)	,
 @telefono			Varchar(15)		,
-@ruc_contacto 		Varchar(11)		,
-@sexo 			CHAR(1)
+@ruc_contacto 		Varchar(11)		
 as
 	Begin
 		Begin Transaction
@@ -26,8 +25,7 @@ as
 				edad			= @edad,
 				Direccion		= @Direccion,
 				telefono		= @telefono,
-				ruc_contacto 	= @ruc_contacto,
-				sexo 		= @sexo
+				ruc_contacto 	= @ruc_contacto
 			Where Id_Clientes=@Id_Clientes
 
 		If @@ERROR<>0
