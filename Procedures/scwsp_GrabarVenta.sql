@@ -263,7 +263,7 @@ Begin Catch
 	)
 		SELECT 
 		'P',
-		@Codi_Documento,
+		@Tipo,
 		@Serie_Boleto,
 		@Nume_Boleto, 
 		ERROR_NUMBER() AS errNumber,
