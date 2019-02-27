@@ -1,7 +1,7 @@
 Create Procedure scwsp_GenerarCorrelativoAuxiliar
 @Tabla			VarChar(40),
 @Oficina		VarChar(50),
-@Correlativo	Varchar(5) Output
+@Correlativo	Varchar(6) Output
 AS
 Begin
 	Begin Transaction
