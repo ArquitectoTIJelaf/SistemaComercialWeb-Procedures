@@ -40,7 +40,7 @@ begin
 					@Codi_PuntoVenta,
 					@Codi_Usuario	,
 					1				,
-					Convert(Varchar(10),getdate(),108)		,
+					FORMAT(GETDATE(), 'hh:mm') + RIGHT(CONVERT(varchar(32),GETDATE(),100), 2),
 					Convert(Varchar(10),getdate(),103)		,
 					Convert(Varchar(10),getdate(),103)		,
 					Convert(Varchar(10),getdate(),103)		,
@@ -48,10 +48,10 @@ begin
 					''	,
 					@IMP_TUR		,
 					0		,
-					Convert(Varchar(10),getdate(),108)		,
+					FORMAT(GETDATE(), 'hh:mm') + RIGHT(CONVERT(varchar(32),GETDATE(),100), 2),
 					0		,
 					'Cierre Parcial'			,
-					Convert(Varchar(10),getdate(),108)
+					FORMAT(GETDATE(), 'hh:mm') + RIGHT(CONVERT(varchar(32),GETDATE(),100), 2)
 				)
 	If @@ERROR<>0
 		RollBack Transaction
