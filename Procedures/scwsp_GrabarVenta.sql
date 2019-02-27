@@ -235,7 +235,7 @@ Begin Try
 						Codi_Sucursal=@Codi_Oficina and
 						Codi_PuntoVenta=@Codi_PuntoVenta and
 						Terminal=@Codi_Terminal and
-						Codi_Documento=@Tipo and
+						Codi_Documento=@Codi_Documento and
 						Serie=@Serie_Boleto and
 						Tipo=@Tipo_Elect
 			End
