@@ -36,6 +36,8 @@ Alter Procedure scwsp_GrabarVenta
 @Id_Venta					Int Output
 as
 
+Begin Transaction
+
 Begin Try
 		DECLARE @Hora_Venta AS VARCHAR(20),@POSICION INT 
 		Declare @Porcentaje_IGV				Real
