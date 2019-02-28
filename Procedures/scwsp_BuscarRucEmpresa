@@ -5,10 +5,7 @@ BEGIN
 	SET NOCOUNT ON
 
 		SELECT
-			Codi_Empresa
-			,Razon_Social
-			,Ruc
-			,DIRECCION
+			Ruc
 		FROM
 			Tb_Empresa
 		Where
