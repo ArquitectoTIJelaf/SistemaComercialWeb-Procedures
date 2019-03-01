@@ -238,7 +238,7 @@ Begin Try
 				
 				Update Tb_Correlativo_Documento
 				Set 
-					Numero=Numero+1
+					Numero = right('000000'+LTRIM(Numero + 1),7)
 				Where	Codi_Empresa=@Codi_Empresa and 
 						Codi_Sucursal=@Codi_Oficina and
 						Codi_PuntoVenta=@Codi_PuntoVenta and
