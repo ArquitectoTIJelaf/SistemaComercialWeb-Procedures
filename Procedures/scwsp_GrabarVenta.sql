@@ -33,6 +33,7 @@ Alter Procedure scwsp_GrabarVenta
 @Hora_Embarque				Varchar(7),
 @Nivel_Asiento				TinyInt,
 @Codi_Terminal				SmallInt,
+@Credito				Decimal(15,2),
 @Id_Venta					Int Output
 as
 
@@ -77,7 +78,8 @@ Begin Try
 			Tipo_Pago, 
 			SUC_VENTA, 
 			Vale_Remoto,
-			TIPO_V
+			TIPO_V,
+			credito
 		) 
 		VALUES
 		(
@@ -112,7 +114,8 @@ Begin Try
 			@Tipo_Pago, 
 			@Codi_Oficina,--@Suc_Venta, 
 			'',--@Vale_Remoto,
-			'N'
+			'N',
+			@Credito
 		)
 
 		Set @Id_Venta=SCOPE_IDENTITY()
