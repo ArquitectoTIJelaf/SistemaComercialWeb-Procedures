@@ -1,4 +1,4 @@
-Alter Procedure scwsp_GrabarVenta
+Create Procedure scwsp_GrabarVentaFechaAbierta
 ---Venta
 @Serie_Boleto				SmallInt,
 @Nume_Boleto				Int,
@@ -34,13 +34,16 @@ Alter Procedure scwsp_GrabarVenta
 @Hora_Embarque				Varchar(7),
 @Nivel_Asiento				TinyInt,
 @Codi_Terminal				SmallInt,
-@Credito				Decimal(15,2),
+@Credito					Decimal(15,2),
+
+---Venta Fecha Abierta	
+@Codi_Ruta					SmallInt,
 @Id_Venta					Int Output
 as
 
 Begin Transaction
 
-Begin Try
+Begin Try		
 		DECLARE @Hora_Venta AS VARCHAR(20),@POSICION INT 
 		Declare @Porcentaje_IGV				Real
 		SELECT @Porcentaje_IGV=cast(Cod_Emp as Real) FROM tablas Where Nom_tab='IGV' and Cod_Tip='03'
@@ -161,7 +164,18 @@ Begin Try
 						0,
 						@Tipo,
 						@Hora_Venta
-					)  				
+					)  
+
+				Insert Into Tb_Datos_FechaAbierta(
+					Id_Venta,
+					codi_ruta,
+					codi_servicio
+				)
+				Values(
+					@ID_VENTA,
+					@Codi_Ruta,
+					@Codi_Servicio
+				)					
 			End
 		Set @POSICION=2
 

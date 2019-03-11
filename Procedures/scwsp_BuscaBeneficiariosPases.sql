@@ -1,7 +1,8 @@
-Create Procedure scwsp_BuscaBeneficiariosPases 
+Alter Procedure scwsp_BuscaBeneficiariosPases 
 @Codi_Socio		Varchar(2)
 as
 	Select 
+		cod_socio	Codi_Socio,
 		Nombre_Pariente  Nombre_Beneficiario,
 		tipo_doc Tipo_Documento,
 		t.NOM_TIP Documento,
