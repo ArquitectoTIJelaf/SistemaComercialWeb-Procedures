@@ -1,4 +1,4 @@
-Create Procedure scwsp_GrabarVentaFechaAbierta
+ALTER Procedure scwsp_GrabarVentaFechaAbierta
 ---Venta
 @Serie_Boleto				SmallInt,
 @Nume_Boleto				Int,
@@ -247,12 +247,12 @@ Begin Try
 						SET @Tipo_Elect='M' 
 					END
 
-				DECLARE @auxCodigoBF_Interno VARCHAR(2);
-				SET @auxCodigoBF_Interno =
-					CASE @Codi_Documento
-						WHEN '01' THEN '17'
-						WHEN '03' THEN '16'
-					END;
+				--DECLARE @auxCodigoBF_Interno VARCHAR(2);
+				--SET @auxCodigoBF_Interno =
+				--	CASE @Codi_Documento
+				--		WHEN '01' THEN '17'
+				--		WHEN '03' THEN '16'
+				--	END;
 				
 				Update Tb_Correlativo_Documento
 				Set 
@@ -261,7 +261,7 @@ Begin Try
 						Codi_Sucursal=@Codi_Oficina and
 						Codi_PuntoVenta=@Codi_PuntoVenta and
 						Terminal=@Codi_Terminal and
-						Codi_Documento=@auxCodigoBF_Interno and
+						Codi_Documento=@Codi_Documento and
 						Serie=@Serie_Boleto and
 						Tipo=@Tipo_Elect
 			End
@@ -302,3 +302,4 @@ Begin Catch
 		SET @Id_Venta=-1
 
 End Catch
+
