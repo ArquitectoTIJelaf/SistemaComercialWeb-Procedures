@@ -1,7 +1,0 @@
-ALTER PROCEDURE scwsp_BuscarAcompañante
-@IDVENTA Int
-AS
-SET NOCOUNT ON
-BEGIN
-	select * from TB_VENTA_ACOMPAÑANTE where IDVENTA = @IDVENTA
-END;
