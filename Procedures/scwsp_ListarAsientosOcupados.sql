@@ -1,4 +1,4 @@
-ALTER Procedure scwsp_ListarAsientosOcupados 
+Alter Procedure scwsp_ListarAsientosOcupados 
 @Codi_Programacion		Int,
 @Fecha_Programacion		SmallDateTime,
 @Nro_Viaje				Int,
@@ -12,7 +12,7 @@ as
 			--Tabla Asiento con Nro Viaje
 			Select
 			NUME_ASIENTO, 0 Tipo_Documento,'' Numero_Documento,'' Ruc_Contacto,
-			'01/01/1990' Fecha_Viaje,'01/01/1990' Fecha_Venta,'' Nacionalidad,0 Precio_Venta, '' Recoge_En,
+			'01/01/1990' Fecha_Viaje,'' Fecha_Venta,'' Nacionalidad,0 Precio_Venta, '' Recoge_En,
 			0 Color,'AB' FLAG_VENTA,'' Sigla, 0 Codi_Origen, 0 Codi_Destino,'' Boleto,'' tipo, '' id_venta From ASIENTO 
 			Where CODI_PROGRAMACION=@Nro_Viaje and t_ruta='V' and fecha=@Fecha_Programacion
 		End
@@ -34,7 +34,7 @@ as
 			--Tabla Asiento con Programacion
 			Select
 			NUME_ASIENTO, 0 Tipo_Documento,'' Numero_Documento,'' Ruc_Contacto,
-			'01/01/1990' Fecha_Viaje,'01/01/1990' Fecha_Venta,'' Nacionalidad,0 Precio_Venta, '' Recoge_En,
+			'01/01/1990' Fecha_Viaje,'' Fecha_Venta,'' Nacionalidad,0 Precio_Venta, '' Recoge_En,
 			0 Color,'' FLAG_VENTA,'' Sigla, 0 Codi_Origen, 0 Codi_Destino,''  Boleto,''tipo, '' id_venta From ASIENTO 
 			Where CODI_PROGRAMACION=@Codi_Programacion and t_ruta='P'
 			Union
@@ -42,7 +42,9 @@ as
 			----Tabla Asiento con Nro Viaje
 			Select
 			NUME_ASIENTO, 0 Tipo_Documento,'' Numero_Documento,'' Ruc_Contacto,
-			'01/01/1990' Fecha_Viaje,'01/01/1990' Fecha_Venta,'' Nacionalidad,0 Precio_Venta, '' Recoge_En,
+			'01/01/1990' Fecha_Viaje,'' Fecha_Venta,'' Nacionalidad,0 Precio_Venta, '' Recoge_En,
 			0 Color,'' FLAG_VENTA,'' Sigla, 0 Codi_Origen, 0 Codi_Destino,''  Boleto,''tipo, '' id_venta From ASIENTO 
 			Where CODI_PROGRAMACION=@Nro_Viaje and t_ruta='V' and fecha=@Fecha_Programacion
 		End
+
+
