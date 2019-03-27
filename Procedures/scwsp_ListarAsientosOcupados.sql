@@ -1,4 +1,5 @@
-alter Procedure scwsp_ListarAsientosOcupados 
+Alter Procedure scwsp_ListarAsientosOcupados 
+
 @Codi_Programacion		Int,
 @Fecha_Programacion		SmallDateTime,
 @Nro_Viaje				Int,
@@ -7,22 +8,19 @@ alter Procedure scwsp_ListarAsientosOcupados
 
 as
 
-
 	If @Codi_Programacion=0
 
 		Begin
-
-
 
 			--Tabla Asiento con Nro Viaje
 
 			Select
 
-			NUME_ASIENTO, 0 Tipo_Documento,'' Numero_Documento,'' Ruc_Contacto,
+			NUME_ASIENTO, '' Tipo_Documento,'' Numero_Documento,'' Ruc_Contacto,
 
-			'01/01/1990' Fecha_Viaje,'' Fecha_Venta,'' Nacionalidad,0 Precio_Venta, '' Recoge_En,
+			'' Fecha_Viaje,'' Fecha_Venta,'' Nacionalidad,0 Precio_Venta, '' Recoge_En,
 
-			0 Color,'AB' FLAG_VENTA,'' Sigla, 0 Codi_Origen, 0 Codi_Destino,'' Boleto,'' tipo, '' id_venta From ASIENTO 
+			0 Color,'' FLAG_VENTA,'' Sigla, 0 Codi_Origen, 0 Codi_Destino,'' Boleto,'' tipo, '' id_venta From ASIENTO 
 
 			Where CODI_PROGRAMACION=@Nro_Viaje and t_ruta='V' and fecha=@Fecha_Programacion
 
@@ -31,8 +29,6 @@ as
 	Else
 
 		Begin
-
-
 
 			--Tabla Venta
 
@@ -56,15 +52,13 @@ as
 
 			Union
 
-
-
 			--Tabla Asiento con Programacion
 
 			Select
 
-			NUME_ASIENTO, 0 Tipo_Documento,'' Numero_Documento,'' Ruc_Contacto,
+			NUME_ASIENTO, '' Tipo_Documento,'' Numero_Documento,'' Ruc_Contacto,
 
-			'01/01/1990' Fecha_Viaje,'' Fecha_Venta,'' Nacionalidad,0 Precio_Venta, '' Recoge_En,
+			'' Fecha_Viaje,'' Fecha_Venta,'' Nacionalidad,0 Precio_Venta, '' Recoge_En,
 
 			0 Color,'' FLAG_VENTA,'' Sigla, 0 Codi_Origen, 0 Codi_Destino,''  Boleto,''tipo, '' id_venta From ASIENTO 
 
@@ -72,18 +66,17 @@ as
 
 			Union
 
-			
-
 			----Tabla Asiento con Nro Viaje
 
 			Select
 
-			NUME_ASIENTO, 0 Tipo_Documento,'' Numero_Documento,'' Ruc_Contacto,
+			NUME_ASIENTO, '' Tipo_Documento,'' Numero_Documento,'' Ruc_Contacto,
 
-			'01/01/1990' Fecha_Viaje,'' Fecha_Venta,'' Nacionalidad,0 Precio_Venta, '' Recoge_En,
+			'' Fecha_Viaje,'' Fecha_Venta,'' Nacionalidad,0 Precio_Venta, '' Recoge_En,
 
 			0 Color,'' FLAG_VENTA,'' Sigla, 0 Codi_Origen, 0 Codi_Destino,''  Boleto,''tipo, '' id_venta From ASIENTO 
 
 			Where CODI_PROGRAMACION=@Nro_Viaje and t_ruta='V' and fecha=@Fecha_Programacion
 
 		End
+
