@@ -1,4 +1,4 @@
-Create Procedure scwsp_ValidarBloqueoAsiento
+Alter Procedure scwsp_ValidarBloqueoAsiento
 @Codi_Programacion 		Int,
 @Nro_Viaje 				Int,
 @Codi_Origen			SmallInt,
@@ -6,6 +6,7 @@ Create Procedure scwsp_ValidarBloqueoAsiento
 @Nume_Asiento			Varchar(2),
 @Fecha_Programacion		SmallDatetime
 as
+
 Set NoCount On
 
 	Declare @Codi_Sucursal			SmallInt
@@ -35,23 +36,25 @@ Set NoCount On
 			where CODI_PROGRAMACION=@Codi_Programacion AND NUME_ASIENTO=@Nume_Asiento 
 			and cod_origen=@Codi_Origen and CODI_SUBRUTA=@Codi_Destino
 			and INDI_ANULADO='F'
-			Union
-			Select Top 1 1 From Tb_AsientosBloqueados 
-			Where cod_OrigenP=@Codi_Origen and Cod_DestinoP=@Codi_Destino
-			and Cod_OrigenB=@Codi_Sucursal and Cod_DestinoB=@Codi_Ruta 
-			and Cod_Servicio=@Codi_Servicio and cod_empresa=@Codi_Empresa
-			and horario=@Turno
+			--Union
+			--Select Top 1 1 From Tb_AsientosBloqueados 
+			--Where cod_OrigenP=@Codi_Origen and Cod_DestinoP=@Codi_Destino
+			--and Cod_OrigenB=@Codi_Sucursal and Cod_DestinoB=@Codi_Ruta 
+			--and Cod_Servicio=@Codi_Servicio and cod_empresa=@Codi_Empresa
+			--and horario=@Turno AND NUME_ASIENTO=@Nume_Asiento
 		End
 	Else
 		Begin
 			SELECT Top 1 1 FROM Asiento 
 			where CODI_PROGRAMACION=@Nro_Viaje AND NUME_ASIENTO=@Nume_Asiento and t_ruta='V'
 			and Fecha=@Fecha_Programacion
-			Union
-			Select Top 1 1 From Tb_AsientosBloqueados 
-			Where cod_OrigenP=@Codi_Origen and Cod_DestinoP=@Codi_Destino
-			and Cod_OrigenB=@Codi_Sucursal and Cod_DestinoB=@Codi_Ruta 
-			and Cod_Servicio=@Codi_Servicio and cod_empresa=@Codi_Empresa
-			and horario=@Turno
+			--Union
+			--Select Top 1 1 From Tb_AsientosBloqueados 
+			--Where cod_OrigenP=@Codi_Origen and Cod_DestinoP=@Codi_Destino
+			--and Cod_OrigenB=@Codi_Sucursal and Cod_DestinoB=@Codi_Ruta 
+			--and Cod_Servicio=@Codi_Servicio and cod_empresa=@Codi_Empresa
+			--and horario=@Turno
 		End
 	
+
+
