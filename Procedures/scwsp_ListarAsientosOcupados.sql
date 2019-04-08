@@ -1,12 +1,11 @@
-ALTER Procedure scwsp_ListarAsientosOcupados 
-
+Alter Procedure scwsp_ListarAsientosOcupados 
 @Codi_Programacion		Int,
 @Fecha_Programacion		SmallDateTime,
 @Nro_Viaje				Int,
 @Codi_Origen			SmallInt,
 @Codi_DEstino			SmallInt
 
-as
+As
 
 	If @Codi_Programacion=0
 
@@ -28,7 +27,7 @@ as
 	Else
 
 		Begin
-			--Tabla Venta
+			----Tabla Venta
 			Select
 				v.NUME_ASIENTO, v.TIPO_DOC Tipo_Documento, v.DNI Numero_Documento, v.NIT_CLIENTE Ruc_Contacto,
 				vd.Fecha_Viaje, v.FECH_VENTA Fecha_Venta, vd.Nacionalidad, v.PREC_VENTA Precio_Venta, v.RECO_VENTA Recoge_En,
@@ -46,7 +45,7 @@ as
 
 			Union
 
-			--Tabla Asiento con Programacion
+			----Tabla Asiento con Programacion
 			Select
 				NUME_ASIENTO, '' Tipo_Documento, '' Numero_Documento, '' Ruc_Contacto,
 				'' Fecha_Viaje, '' Fecha_Venta, '' Nacionalidad, 0 Precio_Venta, '' Recoge_En,
