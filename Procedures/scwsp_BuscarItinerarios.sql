@@ -8,9 +8,9 @@ SET NOCOUNT ON
 BEGIN
 
 	--DECLARE @Codi_Origen	SmallInt	= 6;
-	--DECLARE @Codi_Destino	SmallInt	= 0;
+	--DECLARE @Codi_Destino	SmallInt	= 1;
 	--DECLARE @Codi_Ruta		SmallInt	= 0;
-	--DECLARE @Hora			varchar(7)	= '';
+	--DECLARE @Hora			varchar(7)	= '04:00PM';
 
 	DECLARE @Tiempo Int
 	SET @Tiempo = 10
@@ -47,7 +47,7 @@ BEGIN
 			Tb_Ruta_Maestro WITH(nolock)
 			INNER JOIN Tb_Maestro_Programacion WITH(nolock) ON Tb_Ruta_Maestro.NRO_RUTA = Tb_Maestro_Programacion.NRO_RUTA
 			INNER JOIN Tb_Ruta_Intermedio WITH(nolock) ON Tb_Maestro_Programacion.NRO_VIAJE = Tb_Ruta_Intermedio.NRO_VIAJE
-			INNER JOIN Tb_Ruta_Intermedio AS dst WITH(nolock) ON Tb_Maestro_Programacion.NRO_VIAJE = dst.NRO_VIAJE
+			--INNER JOIN Tb_Ruta_Intermedio AS dst WITH(nolock) ON Tb_Maestro_Programacion.NRO_VIAJE = dst.NRO_VIAJE
 			INNER JOIN Tb_Empresa ON Tb_Maestro_Programacion.CODI_EMPRESA = Tb_Empresa.Codi_Empresa
 			INNER JOIN Tb_Servicio ON Tb_Ruta_Maestro.CODI_SERVICIO = Tb_Servicio.Codi_Servicio
 			INNER JOIN Tb_Oficinas AS suc ON Tb_Ruta_Maestro.CODI_SUCURSAL = suc.Codi_Sucursal
@@ -60,7 +60,7 @@ BEGIN
 			AND (Tb_Ruta_Maestro.CODI_DESTINO <> @Codi_Origen)
 			AND (Tb_Ruta_Maestro.CODI_DESTINO <> 79)
 			AND (Tb_Ruta_Intermedio.CODI_SUCURSAL = @Codi_Origen OR @Codi_Origen = 0)
-			AND (dst.CODI_SUCURSAL = @Codi_Destino OR @Codi_Destino = 0)
+			--AND (dst.CODI_SUCURSAL = @Codi_Destino OR @Codi_Destino = 0)
 			AND CONVERT(DATETIME, Tb_Ruta_Intermedio.HORA_PASO, 300) >= CONVERT(DATETIME, DATEADD(mi, @Tiempo, @Hora), 300)
 			AND Tb_Maestro_Programacion.TR = 0 -- Gerardo
 			AND Tb_Maestro_Programacion.TIPO_B = 1 -- Gerardo
