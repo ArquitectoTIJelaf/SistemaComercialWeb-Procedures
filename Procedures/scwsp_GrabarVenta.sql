@@ -1,4 +1,4 @@
-Alter Procedure scwsp_GrabarVenta
+ALTER Procedure scwsp_GrabarVenta
 ---Venta
 @Serie_Boleto				SmallInt,
 @Nume_Boleto				Int,
@@ -243,13 +243,13 @@ Begin Try
 				Update Tb_Correlativo_Documento
 				Set 
 					Numero=Numero+1
-				Where	Codi_Empresa=@Codi_Empresa and 
-						Codi_Sucursal=@Codi_Oficina and
-						Codi_PuntoVenta=@Codi_PuntoVenta and
-						Terminal=@Codi_Terminal and
-						Codi_Documento=@Codi_Documento and
-						Serie=@Serie_Boleto and
-						Tipo=@Tipo_Elect
+				Where	Codi_Empresa = @Codi_Empresa and 
+						Codi_Sucursal = @Codi_Oficina and
+						Codi_PuntoVenta = @Codi_PuntoVenta and
+						CAST(Terminal AS smallint) = @Codi_Terminal and
+						Codi_Documento = @Codi_Documento and
+						Serie = @Serie_Boleto and
+						Tipo = @Tipo_Elect
 			End
 		Set @POSICION=4
 		Commit Transaction
