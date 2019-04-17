@@ -242,14 +242,14 @@ Begin Try
 				
 				Update Tb_Correlativo_Documento
 				Set 
-					Numero=Numero+1
+					Numero = Numero + 1
 				Where	Codi_Empresa = @Codi_Empresa and 
 						Codi_Sucursal = @Codi_Oficina and
 						Codi_PuntoVenta = @Codi_PuntoVenta and
-						CAST(Terminal AS smallint) = @Codi_Terminal and
 						Codi_Documento = @Codi_Documento and
 						Serie = @Serie_Boleto and
-						Tipo = @Tipo_Elect
+						Tipo = @Tipo_Elect and
+						CAST(Terminal AS smallint) = @Codi_Terminal
 			End
 		Set @POSICION=4
 		Commit Transaction
