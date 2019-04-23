@@ -1,0 +1,35 @@
+Alter Procedure scwsp_ListarAsientosVendidos
+@Codi_Programacion		Int
+As
+	
+	----Tabla Venta
+	Select
+		v.NUME_ASIENTO, v.TIPO_DOC Tipo_Documento, v.DNI Numero_Documento, v.NIT_CLIENTE Ruc_Contacto,
+		vd.Fecha_Viaje, v.FECH_VENTA Fecha_Venta, vd.Nacionalidad, v.PREC_VENTA Precio_Venta, v.RECO_VENTA Recoge_En,
+		ISNULL(cd.Color, '0') Color, FLAG_VENTA, pv.Sigla, v.cod_origen Codi_Origen, v.CODI_SUBRUTA Codi_Destino, vd.NUME_BOLETO Boleto,
+		v.tipo, v.id_venta
+	From
+		Venta v
+		Inner Join VENTA_DERIVADA vd on v.id_venta=vd.id_venta
+		Left Join Tb_Colores_Destino cd on v.CODI_SUBRUTA=cd.Codi_destino and vd.Servicio=cd.codi_Servicio
+		Inner Join Tb_PuntoVenta pv on v.Punto_Venta=pv.Codi_puntoVenta
+	Where
+		v.CODI_PROGRAMACION = @Codi_Programacion 
+		and v.INDI_ANULADO = 'F' and v.FLAG_VENTA <> 'O'
+		and v.per_autoriza = '1' 
+	
+	Union
+	----Tabla Tb_Boleto_Ruta
+	Select
+		br.Nro_Asiento NUME_ASIENTO, '0'+cast(br.TD_Pasajero as Varchar) Tipo_Documento, br.ND_Pasajero Numero_Documento, br.Ruc_Pasajero Ruc_Contacto,
+		br.Fecha_Viaje, br.Fecha_Venta, '' Nacionalidad, br.Total Precio_Venta, br.Codi_Origen Recoge_En,
+		ISNULL(cd.Color, '0') Color, 'B' FLAG_VENTA, pv.Sigla, br.Codi_Origen, br.Codi_Destino, br.Serie + '-'+ right('000000' + cast(br.Numero as varchar),7) Boleto,
+		Case Left(br.Serie,1) When 'B' Then 'B' When 'F' Then 'F' Else 'M' End tipo , 0 id_venta
+	From
+		Tb_BoletoRuta br
+		Inner Join Tb_Programacion p on br.Codi_Programacion=p.Codi_Programacion
+		Left Join Tb_PuntoVenta pv on br.Codi_PuntoVenta=pv.Codi_puntoVenta
+		Inner Join Tb_Colores_Destino cd on br.Codi_Destino=cd.Codi_destino and p.Codi_Servicio=cd.codi_Servicio
+	Where
+		br.Codi_Programacion = @Codi_Programacion 
+		and br.Anulado= 'F' 
