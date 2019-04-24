@@ -1,4 +1,4 @@
-ALTER PROCEDURE scwsp_BuscarItinerarios
+Alter PROCEDURE scwsp_BuscarItinerarios
 @Codi_Origen	SmallInt,
 @Codi_Destino	SmallInt,
 @Codi_Ruta		SmallInt,
@@ -20,7 +20,7 @@ BEGIN
 			SET @Tiempo = -10
 		END
 
-	SELECT TOP 100 * FROM (
+	SELECT TOP 200 * FROM (
 		SELECT DISTINCT
 			Tb_Maestro_Programacion.NRO_VIAJE,
 			Tb_Maestro_Programacion.CODI_EMPRESA,
