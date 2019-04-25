@@ -146,7 +146,7 @@ Begin Try
 				VALUES    
 					(
 						@ID_VENTA,
-						RIGHT('00'+LTRIM(@Serie_Boleto),3)+'-'+right('000000'+LTRIM(@Nume_Boleto),7),
+						RIGHT('000' + CAST(@Serie_Boleto AS varchar), 3) + '-' + RIGHT('0000000' + CAST(@Nume_Boleto AS varchar), 7),
 						@Fecha_Viaje,
 						@Hora_Viaje,
 						@Nacionalidad,
@@ -191,7 +191,7 @@ Begin Try
 		--		Values
 		--		(
 		--			@IdContrato,
-		--			RIGHT('00'+LTRIM(@Serie_Boleto),3)+'-'+right('000000'+LTRIM(@Nume_Boleto),7),
+					--RIGHT('000' + CAST(@Serie_Boleto AS varchar), 3) + '-' + RIGHT('0000000' + CAST(@Nume_Boleto AS varchar), 7),
 		--			'0',
 		--			@NroSolicitud,
 		--			@IdAreaContrato,
@@ -232,13 +232,6 @@ Begin Try
 					BEGIN 
 						SET @Tipo_Elect='M' 
 					END
-
-				--DECLARE @auxCodigoBF_Interno VARCHAR(2);
-				--SET @auxCodigoBF_Interno =
-				--	CASE @Codi_Documento
-				--		WHEN '01' THEN '17'
-				--		WHEN '03' THEN '16'
-				--	END;
 				
 				Update Tb_Correlativo_Documento
 				Set 
@@ -249,7 +242,7 @@ Begin Try
 						Codi_Documento = @Codi_Documento and
 						Serie = @Serie_Boleto and
 						Tipo = @Tipo_Elect and
-						CAST(Terminal AS smallint) = @Codi_Terminal
+						Terminal = RIGHT('000' + CAST(@Codi_Terminal AS varchar), 3)
 			End
 		Set @POSICION=4
 		Commit Transaction
