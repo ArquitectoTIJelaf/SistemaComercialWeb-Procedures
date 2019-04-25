@@ -149,7 +149,7 @@ Begin Try
 				VALUES    
 					(
 						@ID_VENTA,
-						RIGHT('00'+LTRIM(@Serie_Boleto),3)+'-'+right('000000'+LTRIM(@Nume_Boleto),7),
+						RIGHT('000' + CAST(@Serie_Boleto AS varchar), 3) + '-' + RIGHT('0000000' + CAST(@Nume_Boleto AS varchar), 7),
 						@Fecha_Viaje,
 						@Hora_Viaje,
 						@Nacionalidad,
@@ -205,7 +205,7 @@ Begin Try
 		--		Values
 		--		(
 		--			@IdContrato,
-		--			RIGHT('00'+LTRIM(@Serie_Boleto),3)+'-'+right('000000'+LTRIM(@Nume_Boleto),7),
+		--			RIGHT('000' + CAST(@Serie_Boleto AS varchar), 3) + '-' + RIGHT('0000000' + CAST(@Nume_Boleto AS varchar), 7),
 		--			'0',
 		--			@NroSolicitud,
 		--			@IdAreaContrato,
@@ -260,7 +260,7 @@ Begin Try
 				Where	Codi_Empresa=@Codi_Empresa and 
 						Codi_Sucursal=@Codi_Oficina and
 						Codi_PuntoVenta=@Codi_PuntoVenta and
-						Terminal=@Codi_Terminal and
+						Terminal= RIGHT(CAST(@Codi_Terminal AS varchar), 3) and
 						Codi_Documento=@Codi_Documento and
 						Serie=@Serie_Boleto and
 						Tipo=@Tipo_Elect
@@ -302,4 +302,3 @@ Begin Catch
 		SET @Id_Venta=-1
 
 End Catch
-
