@@ -12,5 +12,5 @@ Codi_Empresa=			@Codi_Empresa		and
 Codi_Documento=			@Codi_Documento		and
 Codi_Sucursal=			@Codi_Sucursal		and
 Codi_PuntoVenta=		@Codi_PuntoVenta	and
-Cast(Terminal as int)=	Cast(@Terminal as int)			and
+Terminal=				right('000' + @Terminal,3)	and
 Tipo=@Tipo
