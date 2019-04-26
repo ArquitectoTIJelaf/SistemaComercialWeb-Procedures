@@ -58,7 +58,7 @@ As
 	CLOSE AsientoBloqInfo
 	DEALLOCATE AsientoBloqInfo
 
-	If @Codi_Programacion = 0
+	If @Codi_Programacion <= 0
 		Begin
 			-- Tb_AsientosBloqueados
 			Select
