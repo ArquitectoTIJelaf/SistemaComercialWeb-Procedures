@@ -1,7 +1,7 @@
 Alter Procedure scwsp_ListarAsientosVendidos
 @Codi_Programacion		Int
 As
-	----Tabla Venta
+	-- Tabla Venta
 	Select
 		v.NUME_ASIENTO, v.TIPO_DOC Tipo_Documento, v.DNI Numero_Documento, v.NIT_CLIENTE Ruc_Contacto,
 		vd.Fecha_Viaje, v.FECH_VENTA Fecha_Venta, vd.Nacionalidad, v.PREC_VENTA Precio_Venta, v.RECO_VENTA Recoge_En,
@@ -13,17 +13,40 @@ As
 		Left Join Tb_Colores_Destino cd on v.CODI_SUBRUTA=cd.Codi_destino and vd.Servicio=cd.codi_Servicio
 		Inner Join Tb_PuntoVenta pv on v.Punto_Venta=pv.Codi_puntoVenta
 	Where
-		v.CODI_PROGRAMACION = @Codi_Programacion 
-		and v.INDI_ANULADO = 'F' and v.FLAG_VENTA <> 'O'
-		and v.per_autoriza = '1' 
+		v.CODI_PROGRAMACION = @Codi_Programacion
+		and v.INDI_ANULADO = 'F'
+		and v.per_autoriza = '1'
+		and v.FLAG_VENTA <> 'O'
 	
-	Union
+	UNION
 
-	----Tabla Tb_Boleto_Ruta
+	-- Tabla Venta (Bloqueados del Cliente/Servidor -> FLAG_VENTA = 'X')
+	Select
+		v.NUME_ASIENTO, '' Tipo_Documento, '' Numero_Documento, '' Ruc_Contacto,
+		'' Fecha_Viaje, '' Fecha_Venta, '' Nacionalidad, 0 Precio_Venta, '' Recoge_En,
+		'0' Color, FLAG_VENTA, '' Sigla, v.cod_origen Codi_Origen, v.CODI_SUBRUTA Codi_Destino, '' Boleto,
+		'' tipo, '' id_venta
+	From
+		Venta v
+	Where
+		v.CODI_PROGRAMACION = @Codi_Programacion
+		and v.INDI_ANULADO = 'F'
+		and v.per_autoriza = '1'
+		and v.FLAG_VENTA = 'X'
+
+	UNION
+
+	-- Tabla Tb_Boleto_Ruta
 	Select
 		br.Nro_Asiento NUME_ASIENTO, '0'+cast(br.TD_Pasajero as Varchar) Tipo_Documento, br.ND_Pasajero Numero_Documento, br.Ruc_Pasajero Ruc_Contacto,
 		br.Fecha_Viaje, br.Fecha_Venta, '' Nacionalidad, br.Total Precio_Venta, '' Recoge_En,
-		ISNULL(cd.Color, '0') Color, 'B' FLAG_VENTA, pv.Sigla, br.Codi_Origen, br.Codi_Destino, br.Serie + '-'+ right('000000' + cast(br.Numero as varchar),7) Boleto,
+		ISNULL(cd.Color, '0') Color, 'B' FLAG_VENTA, pv.Sigla, br.Codi_Origen, br.Codi_Destino,
+		CASE
+			WHEN ISNUMERIC(SUBSTRING(br.Serie,1,1)) = 1
+				THEN br.Serie + '-' + right('0000000' + cast(br.Numero as varchar), 7)
+			ELSE
+				SUBSTRING(br.Serie,2,4) + '-' + right('0000000' + cast(br.Numero as varchar), 7)
+		END Boleto,
 		Case Left(br.Serie,1) When 'B' Then 'B' When 'F' Then 'F' Else 'M' End tipo , 0 id_venta
 	From
 		Tb_BoletoRuta br
@@ -31,5 +54,5 @@ As
 		Left Join Tb_PuntoVenta pv on br.Codi_PuntoVenta=pv.Codi_puntoVenta
 		Inner Join Tb_Colores_Destino cd on br.Codi_Destino=cd.Codi_destino and p.Codi_Servicio=cd.codi_Servicio
 	Where
-		br.Codi_Programacion = @Codi_Programacion 
-		and br.Anulado= 'F' 
+		br.Codi_Programacion = @Codi_Programacion
+		and br.Anulado= 'F'
