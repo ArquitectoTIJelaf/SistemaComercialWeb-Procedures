@@ -1,14 +1,81 @@
 Alter Procedure scwsp_ListarAsientosVendidos
-@Codi_Programacion		Int
+@Codi_Programacion		Int,
+@Nro_Viaje				Int
 As
-	-- Tabla Venta
+	
+	-- Tabla Tb_AsientosBloqueados
+	Declare @Codi_Sucursal			SmallInt
+	Declare @Codi_Ruta				SmallInt
+	Declare @Codi_Servicio			TinyInt
+	Declare @Codi_Empresa			TinyInt
+	Declare @Turno					Varchar(10)
+	
+	Select
+		@Codi_Empresa = mp.Codi_Empresa,
+		@Codi_Sucursal = rm.Codi_Sucursal,
+		@Codi_Ruta = rm.CODI_DESTINO,
+		@Codi_Servicio = rm.Codi_Servicio,
+		@Turno = mp.HORA 
+	From
+		Tb_Maestro_Programacion mp
+		Inner Join Tb_Ruta_Maestro rm on mp.NRO_RUTA=rm.NRO_RUTA
+	Where
+		mp.NRO_VIAJE=@Nro_Viaje
+
+	Declare @Asientos				Varchar(100)
+	Declare @Codi_OrigenP			SmallInt
+	Declare @Codi_DestinoP			SmallInt
+
+	Declare @NumeroBloque			Int
+	Declare @CantBloques			Int
+	Declare @Tabla					Table (Nume_Asiento Int, Codi_Origen SmallInt, Codi_Destino SmallInt)
+
+	DECLARE AsientoBloqInfo CURSOR FOR 
+		Select
+			Asientos,cod_OrigenP,Cod_DestinoP
+		From
+			Tb_AsientosBloqueados 
+		Where
+			Cod_OrigenB=@Codi_Sucursal
+			and Cod_DestinoB=@Codi_Ruta 
+			and Cod_Servicio=@Codi_Servicio
+			and cod_empresa=@Codi_Empresa
+			and horario=@Turno
+	OPEN AsientoBloqInfo
+	FETCH NEXT FROM AsientoBloqInfo INTO @Asientos, @Codi_OrigenP, @Codi_DestinoP
+	WHILE @@fetch_status = 0
+	BEGIN
+		Set @CantBloques = Len(@Asientos)
+		Set @NumeroBloque = 1
+		While (@NumeroBloque < @CantBloques)
+			Begin
+				Insert Into @Tabla(Nume_Asiento, Codi_Origen, Codi_Destino)
+				Values(cast(SUBSTRING(@Asientos, @NumeroBloque, 2)as Int),@Codi_OrigenP, @Codi_DestinoP)
+				Set @NumeroBloque = @NumeroBloque + 2
+			End
+		FETCH NEXT FROM AsientoBloqInfo INTO @Asientos, @Codi_OrigenP, @Codi_DestinoP
+	END
+	CLOSE AsientoBloqInfo
+	DEALLOCATE AsientoBloqInfo
+
+	Select
+		Nume_Asiento NUME_ASIENTO, '' Tipo_Documento, '' Numero_Documento, '' Ruc_Contacto,
+		'' Fecha_Viaje, '' Fecha_Venta, '' Nacionalidad, 0 Precio_Venta, '' Recoge_En,
+		'0' Color, 'AB' FLAG_VENTA, '' Sigla, Codi_Origen, Codi_Destino, '' Boleto,
+		'' tipo, '' id_venta
+	From
+		@Tabla
+
+	UNION
+
+	-- Tabla VENTA
 	Select
 		v.NUME_ASIENTO, v.TIPO_DOC Tipo_Documento, v.DNI Numero_Documento, v.NIT_CLIENTE Ruc_Contacto,
 		vd.Fecha_Viaje, v.FECH_VENTA Fecha_Venta, vd.Nacionalidad, v.PREC_VENTA Precio_Venta, v.RECO_VENTA Recoge_En,
 		ISNULL(cd.Color, '0') Color, FLAG_VENTA, pv.Sigla, v.cod_origen Codi_Origen, v.CODI_SUBRUTA Codi_Destino, vd.NUME_BOLETO Boleto,
 		v.tipo, v.id_venta
 	From
-		Venta v
+		VENTA v
 		Inner Join VENTA_DERIVADA vd on v.id_venta=vd.id_venta
 		Left Join Tb_Colores_Destino cd on v.CODI_SUBRUTA=cd.Codi_destino and vd.Servicio=cd.codi_Servicio
 		Inner Join Tb_PuntoVenta pv on v.Punto_Venta=pv.Codi_puntoVenta
@@ -17,17 +84,17 @@ As
 		and v.INDI_ANULADO = 'F'
 		and v.per_autoriza = '1'
 		and v.FLAG_VENTA <> 'O'
-	
+
 	UNION
 
-	-- Tabla Venta (Bloqueados del Cliente/Servidor -> FLAG_VENTA = 'X')
+	-- Tabla VENTA (Bloqueados del Cliente/Servidor -> FLAG_VENTA = 'X')
 	Select
 		v.NUME_ASIENTO, '' Tipo_Documento, '' Numero_Documento, '' Ruc_Contacto,
 		'' Fecha_Viaje, '' Fecha_Venta, '' Nacionalidad, 0 Precio_Venta, '' Recoge_En,
 		'0' Color, FLAG_VENTA, '' Sigla, v.cod_origen Codi_Origen, v.CODI_SUBRUTA Codi_Destino, '' Boleto,
 		'' tipo, '' id_venta
 	From
-		Venta v
+		VENTA v
 	Where
 		v.CODI_PROGRAMACION = @Codi_Programacion
 		and v.INDI_ANULADO = 'F'
@@ -35,7 +102,7 @@ As
 		and v.FLAG_VENTA = 'X'
 
 	UNION
-
+	
 	-- Tabla Tb_Boleto_Ruta
 	Select
 		br.Nro_Asiento NUME_ASIENTO, '0'+cast(br.TD_Pasajero as Varchar) Tipo_Documento, br.ND_Pasajero Numero_Documento, br.Ruc_Pasajero Ruc_Contacto,
