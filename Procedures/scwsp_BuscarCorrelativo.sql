@@ -6,7 +6,7 @@ Alter Procedure scwsp_BuscarCorrelativo
 @Terminal			Char(3),
 @Tipo				Char(1)
 As
-Select Serie,Numero,* From Tb_Correlativo_Documento 
+Select Serie,Numero From Tb_Correlativo_Documento 
 Where
 Codi_Empresa=			@Codi_Empresa		and
 Codi_Documento=			@Codi_Documento		and
