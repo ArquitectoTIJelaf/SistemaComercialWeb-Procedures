@@ -5,12 +5,12 @@ Alter Procedure scwsp_BuscarCorrelativo
 @Codi_PuntoVenta	SmallInt,
 @Terminal			Char(3),
 @Tipo				Char(1)
-as
-Select Serie,Numero from Tb_Correlativo_Documento 
-Where 
+As
+Select Serie,Numero,* From Tb_Correlativo_Documento 
+Where
 Codi_Empresa=			@Codi_Empresa		and
 Codi_Documento=			@Codi_Documento		and
 Codi_Sucursal=			@Codi_Sucursal		and
 Codi_PuntoVenta=		@Codi_PuntoVenta	and
-Terminal=				RIGHT('000' + @Terminal, 3)	and
-Tipo=@Tipo
+Tipo=					@Tipo				and
+RIGHT('000'+RTRIM(Terminal), 3) = RIGHT('000'+RTRIM(@Terminal), 3)
