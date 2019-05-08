@@ -88,6 +88,8 @@ Set NoCount On
 			SELECT Top 1 1 FROM @Tabla
 			where
 				NUME_ASIENTO= Cast(@Nume_Asiento as int)
+				and Codi_Origen=@Codi_Origen
+				and Codi_Destino=@Codi_Destino
 		End
 	Else
 		Begin
@@ -103,4 +105,6 @@ Set NoCount On
 			SELECT Top 1 1 FROM @Tabla
 			where
 				NUME_ASIENTO= Cast(@Nume_Asiento as int)
+				and Codi_Origen=@Codi_Origen
+				and Codi_Destino=@Codi_Destino
 		End
