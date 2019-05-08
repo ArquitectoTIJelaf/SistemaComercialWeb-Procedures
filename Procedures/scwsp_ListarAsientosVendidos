@@ -64,7 +64,7 @@ As
 			Nume_Asiento NUME_ASIENTO, '' Tipo_Documento, '' Numero_Documento, '' Ruc_Contacto,
 			'' Fecha_Viaje, '' Fecha_Venta, '' Nacionalidad, 0 Precio_Venta, '' Recoge_En,
 			'0' Color, 'AB' FLAG_VENTA, '' Sigla, Codi_Origen, Codi_Destino, '' Boleto,
-			'' tipo, '' id_venta
+			'' tipo, 0 id_venta
 		From
 			@Tabla
 
@@ -94,7 +94,7 @@ As
 			v.NUME_ASIENTO, '' Tipo_Documento, '' Numero_Documento, '' Ruc_Contacto,
 			'' Fecha_Viaje, '' Fecha_Venta, '' Nacionalidad, 0 Precio_Venta, '' Recoge_En,
 			'0' Color, FLAG_VENTA, '' Sigla, v.cod_origen Codi_Origen, v.CODI_SUBRUTA Codi_Destino, '' Boleto,
-			'' tipo, '' id_venta
+			'' tipo, 0 id_venta
 		From
 			VENTA v
 		Where
@@ -107,7 +107,7 @@ As
 		
 		-- Tabla Tb_Boleto_Ruta
 		Select
-			br.Nro_Asiento NUME_ASIENTO, '0'+cast(br.TD_Pasajero as Varchar) Tipo_Documento, br.ND_Pasajero Numero_Documento, br.Ruc_Pasajero Ruc_Contacto,
+			br.Nro_Asiento NUME_ASIENTO, '0' + cast(br.TD_Pasajero as Varchar) Tipo_Documento, br.ND_Pasajero Numero_Documento, br.Ruc_Pasajero Ruc_Contacto,
 			br.Fecha_Viaje, br.Fecha_Venta, '' Nacionalidad, br.Total Precio_Venta, '' Recoge_En,
 			ISNULL(cd.Color, '0') Color, 'B' FLAG_VENTA, pv.Sigla, br.Codi_Origen, br.Codi_Destino,
 			CASE
@@ -134,7 +134,7 @@ As
 			Nume_Asiento NUME_ASIENTO, '' Tipo_Documento, '' Numero_Documento, '' Ruc_Contacto,
 			'' Fecha_Viaje, '' Fecha_Venta, '' Nacionalidad, 0 Precio_Venta, '' Recoge_En,
 			'0' Color, 'AB' FLAG_VENTA, '' Sigla, Codi_Origen, Codi_Destino, '' Boleto,
-			'' tipo, '' id_venta
+			'' tipo, 0 id_venta
 		From
 			@Tabla
 	End;
