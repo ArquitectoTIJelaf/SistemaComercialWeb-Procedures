@@ -1,9 +1,11 @@
-ALTER procedure scwsp_EliminarReserva
+Alter procedure scwsp_EliminarReserva
 @IdVenta		Int
-as
-  Begin Transaction  
-		delete from VENTA where id_venta = @IdVenta
+As
+  Begin Transaction
+		delete from VENTA where id_venta = @IdVenta;
+		Select @@ROWCOUNT as Validator;
+
  If @@Error<>0
-        RollBack Transaction                
-    Else
-       Commit TRANSACTION
+	RollBack Transaction;
+ Else
+	Commit Transaction;
