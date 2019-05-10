@@ -1,15 +1,23 @@
-Create Procedure scwsp_ModificarVentaAFechaAbierta
+Alter Procedure scwsp_ModificarVentaAFechaAbierta
 @Id_Venta					Int,
 @Codi_Servicio				TinyInt,
 @Codi_Ruta					SmallInt
-as
-
+As
 Begin Transaction
-		Update VENTA
-		Set
-			CODI_PROGRAMACION=0
-		Where 	Id_Venta=@Id_Venta
+	
+	Declare @validator tinyint;
 
+	Update VENTA
+	Set
+		CODI_PROGRAMACION = 0
+	Where
+		Id_Venta = @Id_Venta
+		and CODI_PROGRAMACION <> 0
+	
+	Set @validator = @@ROWCOUNT;
+
+	If(@validator > 0)
+	Begin
 		Insert Into Tb_Datos_FechaAbierta(
 			Id_Venta,
 			codi_ruta,
@@ -21,7 +29,12 @@ Begin Transaction
 			@Codi_Servicio
 		)
 
-		If @@ERROR<>0
-			RollBack Transaction
-		Else
-			Commit Transaction
+		Set @validator = @@ROWCOUNT;
+	End;
+	
+	Select @validator as Validator;
+
+If @@ERROR<>0
+	RollBack Transaction
+Else
+	Commit Transaction
