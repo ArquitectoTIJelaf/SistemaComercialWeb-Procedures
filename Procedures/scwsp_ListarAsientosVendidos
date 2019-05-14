@@ -64,7 +64,7 @@ As
 			Nume_Asiento NUME_ASIENTO, '' Tipo_Documento, '' Numero_Documento, '' Ruc_Contacto,
 			'' Fecha_Viaje, '' Fecha_Venta, '' Nacionalidad, 0 Precio_Venta, '' Recoge_En,
 			'0' Color, 'AB' FLAG_VENTA, '' Sigla, Codi_Origen, Codi_Destino, '' Boleto,
-			'' tipo, 0 id_venta
+			'' tipo, 0 id_venta, 0 Cod_Usuario, '' Usuario, 0 Cod_Punto_Venta, '' Punto_Venta
 		From
 			@Tabla
 
@@ -75,12 +75,13 @@ As
 			v.NUME_ASIENTO, v.TIPO_DOC Tipo_Documento, v.DNI Numero_Documento, v.NIT_CLIENTE Ruc_Contacto,
 			vd.Fecha_Viaje, v.FECH_VENTA Fecha_Venta, vd.Nacionalidad, v.PREC_VENTA Precio_Venta, v.RECO_VENTA Recoge_En,
 			ISNULL(cd.Color, '0') Color, FLAG_VENTA, pv.Sigla, v.cod_origen Codi_Origen, v.CODI_SUBRUTA Codi_Destino, vd.NUME_BOLETO Boleto,
-			v.tipo, v.id_venta
+			v.tipo, v.id_venta, v.CLAV_USUARIO Cod_Usuario, u.Login Usuario, v.Punto_Venta Cod_Punto_Venta, pv.Descripcion Punto_Venta
 		From
 			VENTA v
 			Inner Join VENTA_DERIVADA vd on v.id_venta=vd.id_venta
 			Left Join Tb_Colores_Destino cd on v.CODI_SUBRUTA=cd.Codi_destino and vd.Servicio=cd.codi_Servicio
 			Inner Join Tb_PuntoVenta pv on v.Punto_Venta=pv.Codi_puntoVenta
+			Left Join Tb_Usuario u on v.CLAV_USUARIO=u.Codi_Usuario
 		Where
 			v.CODI_PROGRAMACION = @Codi_Programacion
 			and v.INDI_ANULADO = 'F'
@@ -94,7 +95,7 @@ As
 			v.NUME_ASIENTO, '' Tipo_Documento, '' Numero_Documento, '' Ruc_Contacto,
 			'' Fecha_Viaje, '' Fecha_Venta, '' Nacionalidad, 0 Precio_Venta, '' Recoge_En,
 			'0' Color, FLAG_VENTA, '' Sigla, v.cod_origen Codi_Origen, v.CODI_SUBRUTA Codi_Destino, '' Boleto,
-			'' tipo, 0 id_venta
+			'' tipo, 0 id_venta, 0 Cod_Usuario, '' Usuario, 0 Cod_Punto_Venta, '' Punto_Venta
 		From
 			VENTA v
 		Where
@@ -116,7 +117,7 @@ As
 				ELSE
 					SUBSTRING(br.Serie,2,4) + '-' + right('0000000' + cast(br.Numero as varchar), 7)
 			END Boleto,
-			Case Left(br.Serie,1) When 'B' Then 'B' When 'F' Then 'F' Else 'M' End tipo , 0 id_venta
+			Case Left(br.Serie,1) When 'B' Then 'B' When 'F' Then 'F' Else 'M' End tipo , 0 id_venta, 0 Cod_Usuario, '' Usuario, br.Codi_PuntoVenta Cod_Punto_Venta, pv.Descripcion Punto_Venta
 		From
 			Tb_BoletoRuta br
 			Inner Join Tb_Programacion p on br.Codi_Programacion=p.Codi_Programacion
@@ -134,7 +135,7 @@ As
 			Nume_Asiento NUME_ASIENTO, '' Tipo_Documento, '' Numero_Documento, '' Ruc_Contacto,
 			'' Fecha_Viaje, '' Fecha_Venta, '' Nacionalidad, 0 Precio_Venta, '' Recoge_En,
 			'0' Color, 'AB' FLAG_VENTA, '' Sigla, Codi_Origen, Codi_Destino, '' Boleto,
-			'' tipo, 0 id_venta
+			'' tipo, 0 id_venta, 0 Cod_Usuario, '' Usuario, 0 Cod_Punto_Venta, '' Punto_Venta
 		From
 			@Tabla
 	End;
