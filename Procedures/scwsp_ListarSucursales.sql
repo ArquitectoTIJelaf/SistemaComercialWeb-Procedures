@@ -1,7 +1,17 @@
-Create Procedure scwsp_ListarSucursales
-as
-	Select 
-	Codi_Sucursal		,
-	Descripcion			
-	From 
-	Tb_Oficinas
+ALTER PROCEDURE scwsp_ListarSucursales
+AS
+BEGIN
+	SET NOCOUNT ON
+
+		SELECT
+			Codi_Sucursal
+			,Descripcion
+		FROM
+			Tb_Oficinas
+		WHERE
+			Sucursal = 'S'
+		ORDER BY
+			Codi_Sucursal
+
+	SET NOCOUNT OFF
+END
