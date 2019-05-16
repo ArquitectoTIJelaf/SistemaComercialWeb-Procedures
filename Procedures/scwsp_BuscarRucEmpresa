@@ -1,5 +1,5 @@
-ALTER PROCEDURE scwsp_BuscarRucEmpresa
-@Ruc varchar(11)
+Alter PROCEDURE scwsp_BuscarRucEmpresa
+@Codi_Empresa tinyint
 AS
 BEGIN
 	SET NOCOUNT ON
@@ -9,7 +9,7 @@ BEGIN
 		FROM
 			Tb_Empresa
 		Where
-			Ruc = @Ruc
+			Codi_Empresa = @Codi_Empresa
 
 	SET NOCOUNT OFF
 END
