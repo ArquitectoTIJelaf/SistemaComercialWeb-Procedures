@@ -1,0 +1,17 @@
+Alter PROCEDURE scwsp_BuscarAgenciaEmpresa
+@Codi_Empresa tinyint,
+@Codi_Sucursal int
+AS
+BEGIN
+	SET NOCOUNT ON
+
+		SELECT
+			direccion, telefono1, telefono2
+		FROM
+			Tb_Direccion_Empresa
+		Where
+			Codi_Empresa = @Codi_Empresa
+			and codi_sucursal = @Codi_Sucursal
+
+	SET NOCOUNT OFF
+END
