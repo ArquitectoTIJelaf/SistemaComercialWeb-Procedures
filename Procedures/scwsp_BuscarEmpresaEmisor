@@ -1,0 +1,15 @@
+Alter PROCEDURE scwsp_BuscarEmpresaEmisor
+@Codi_Empresa tinyint
+AS
+BEGIN
+	SET NOCOUNT ON
+
+		SELECT
+			Ruc, Razon_Social, DIRECCION
+		FROM
+			Tb_Empresa
+		Where
+			Codi_Empresa = @Codi_Empresa
+
+	SET NOCOUNT OFF
+END
