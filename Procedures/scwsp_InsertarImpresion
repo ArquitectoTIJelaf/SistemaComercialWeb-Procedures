@@ -11,6 +11,7 @@ Alter PROCEDURE scwsp_InsertarImpresion (
 @boleto_tipo		varchar(1),
 @boleto_serie		varchar(3),
 @boleto_num			varchar(8),
+
 @emision_fecha		smalldatetime,
 @emision_hora		varchar(10),
 @cajero_cod			smallint,
@@ -34,7 +35,8 @@ Alter PROCEDURE scwsp_InsertarImpresion (
 @link_pag_fe		varchar(100),
 @cod_poliza			varchar(25),
 @cod_terminal		varchar(1),
-@tip_impresora		tinyint
+@tip_impresora		tinyint,
+@cod_x				char(1)
 )
 AS
 
@@ -76,7 +78,8 @@ BEGIN
 		link_pag_fe,
 		cod_poliza,
 		cod_terminal,
-		tip_impresora	
+		tip_impresora,
+		cod_x
 	)
 	VALUES (
 		@id_venta,	
@@ -114,7 +117,8 @@ BEGIN
 		@link_pag_fe,
 		@cod_poliza,
 		@cod_terminal,
-		@tip_impresora		
+		@tip_impresora,
+		@cod_x
 	);
 
 END;
