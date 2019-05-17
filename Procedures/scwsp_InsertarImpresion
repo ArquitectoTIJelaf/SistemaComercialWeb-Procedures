@@ -12,7 +12,7 @@ Alter PROCEDURE scwsp_InsertarImpresion (
 @boleto_serie		varchar(3),
 @boleto_num			varchar(8),
 
-@emision_fecha		smalldatetime,
+@emision_fecha		date,
 @emision_hora		varchar(10),
 @cajero_cod			smallint,
 @cajero_nom			varchar(30),
@@ -28,7 +28,7 @@ Alter PROCEDURE scwsp_InsertarImpresion (
 @precio_des			varchar(200),
 @nom_servicio		varchar(50),
 @num_asiento		varchar(2),
-@fecha_viaje		smalldatetime,
+@fecha_viaje		date,
 @embarque_dir		varchar(200),
 @embarque_hora		varchar(10),
 @codigo_x_fe		varchar(100),
