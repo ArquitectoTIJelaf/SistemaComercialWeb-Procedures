@@ -1,11 +1,11 @@
-Alter PROCEDURE scwsp_BuscarEmpresaEmisor
+ALTER PROCEDURE scwsp_BuscarEmpresaEmisor
 @Codi_Empresa tinyint
 AS
 BEGIN
 	SET NOCOUNT ON
 
 		SELECT
-			Ruc, Razon_Social, DIRECCION
+			Ruc, Razon_Social, DIRECCION, electronico, contingencia
 		FROM
 			Tb_Empresa
 		Where
