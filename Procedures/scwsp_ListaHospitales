@@ -1,0 +1,7 @@
+Alter Procedure scwsp_ListaHospitales
+As
+	Select
+		CODI_HOSPITAL,
+		DESCRIPCION
+	From
+		TB_HOSPITAL
