@@ -1,7 +1,10 @@
 Alter Procedure scwsp_ListaHospitales
+@CODI_SUCURSAL int
 As
 	Select
 		CODI_HOSPITAL,
 		DESCRIPCION
 	From
 		TB_HOSPITAL
+	Where
+		CODI_SUCURSAL = @CODI_SUCURSAL;
