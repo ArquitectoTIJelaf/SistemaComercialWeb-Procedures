@@ -1,5 +1,5 @@
 Alter Procedure scwsp_GrabarVentaFechaAbierta
----Venta
+-- Venta
 @Serie_Boleto				SmallInt,
 @Nume_Boleto				Int,
 @Codi_Empresa				TinyInt,
@@ -24,7 +24,7 @@ Alter Procedure scwsp_GrabarVentaFechaAbierta
 @Sexo						Char(1),
 @Tipo_Pago					Char(2),
 
----VENTA DERIVADA
+-- VENTA DERIVADA
 @Fecha_Viaje				SmallDateTime,
 @Hora_Viaje					Varchar(10),
 @Nacionalidad				Varchar(30),
@@ -36,10 +36,20 @@ Alter Procedure scwsp_GrabarVentaFechaAbierta
 @Codi_Terminal				SmallInt,
 @Credito					Decimal(15,2),
 
----Venta Fecha Abierta	
+-- Venta Fecha Abierta	
 @Codi_Ruta					SmallInt,
+
+-- Tb_BoletoxContrato
+@IdContrato					int,
+@NroSolicitud				varchar(30),
+@IdAreaContrato				int,
+@Flg_Ida					varchar(1),			-- '1': Check Ida, '0': Sin check
+@Fecha_Cita					dateTime,
+@Id_hospital				int,
+@IdTabla					int,				-- idServicioContrato
+
 @Id_Venta					Int Output
-as
+As
 
 Begin Transaction
 
@@ -102,7 +112,7 @@ Begin Try
 			@Reco_Venta,
 			@Codi_Usuario,
 			'F',
-			'01/01/1900'  ,
+			'01/01/1900',
 			@Dni,
 			@Edad,
 			@Telefono,
@@ -116,8 +126,8 @@ Begin Try
 			'N',
 			@Sexo,
 			@Tipo_Pago, 
-			@Codi_Oficina,--@Suc_Venta, 
-			'',--@Vale_Remoto,
+			@Codi_Oficina, -- @Suc_Venta, 
+			'', -- @Vale_Remoto,
 			'N',
 			@Credito
 		)
@@ -177,64 +187,67 @@ Begin Try
 					@Codi_Servicio
 				)					
 			End
+
 		Set @POSICION=2
 
-		--If @Flag_Venta = '1'
-		--	Begin
-		--		--sp_help Tb_BoletoxContrato
-		--		Declare @Id_BoletoxContrato	Int
+		If @Flag_Venta = '1'
+			Begin
+				--sp_help Tb_BoletoxContrato
+				Declare @Id_BoletoxContrato	Int
 				
-		--		Insert Into Tb_BoletoxContrato
-		--			(
-		--				idContrato,
-		--				nume_boleto,
-		--				st,
-		--				nume_solicitud,
-		--				idareacontrato,
-		--				idliquidacion,
-		--				fecha_emision,
-		--				fecha_viaje,
-		--				precio,
-		--				HoraViaje,
-		--				ID_VENTA,
-		--				Flg_Ida,
-		--				FECHA_CITA,
-		--				ID_HOSPITAL,
-		--				TIPO
-		--			)
-		--		Values
-		--		(
-		--			@IdContrato,
-		--			RIGHT('000' + CAST(@Serie_Boleto AS varchar), 3) + '-' + RIGHT('0000000' + CAST(@Nume_Boleto AS varchar), 7),
-		--			'0',
-		--			@NroSolicitud,
-		--			@IdAreaContrato,
-		--			0,
-		--			convert(varchar,getdate(),103),
-		--			@Fecha_Viaje,
-		--			@Precio_Venta,
-		--			@Hora_Viaje,
-		--			@ID_VENTA,
-		--			@Flg_Ida,
-		--			@Fecha_Cita,
-		--			@Id_hospital,
-		--			@tipo
-		--		)
-		--		set @Id_BoletoxContrato=ident_current('Tb_BoletoxContrato')	
-		--		Insert Into tb_Control
-		--			(
-		--				tipoSave,
-		--				Idboletocontrato,
-		--				Idtabla
-		--			)
-		--		Values
-		--			(
-		--				@TipoSave,
-		--				@Id_BoletoxContrato,
-		--				@IdTabla
-		--			)
-		--	End
+				Insert Into Tb_BoletoxContrato
+					(
+						idContrato,
+						nume_boleto,
+						st,
+						nume_solicitud,
+						idareacontrato,
+						idliquidacion,
+						fecha_emision,
+						fecha_viaje,
+						precio,
+						HoraViaje,
+						ID_VENTA,
+						Flg_Ida,
+						FECHA_CITA,
+						ID_HOSPITAL,
+						TIPO
+					)
+				Values
+				(
+					@IdContrato,
+					RIGHT('000' + CAST(@Serie_Boleto AS varchar), 3) + '-' + RIGHT('0000000' + CAST(@Nume_Boleto AS varchar), 7),
+					'0',
+					@NroSolicitud,
+					@IdAreaContrato,
+					0,
+					convert(varchar,getdate(),103),
+					@Fecha_Viaje,
+					@Precio_Venta,
+					@Hora_Viaje,
+					@ID_VENTA,
+					@Flg_Ida,
+					@Fecha_Cita,
+					@Id_hospital,
+					@tipo
+				)
+				set @Id_BoletoxContrato=ident_current('Tb_BoletoxContrato')	
+				Insert Into tb_Control
+					(
+						tipoSave,
+						Idboletocontrato,
+						Idtabla
+					)
+				Values
+					(
+						'1',
+						@Id_BoletoxContrato,
+						@IdTabla
+					)
+			End
+
 		Set @POSICION=3
+
 		If Not (@Flag_Venta='X' or @Flag_Venta='R' or @Flag_Venta='9')
 			Begin
 				Declare @Tipo_Elect Varchar(1)
@@ -265,7 +278,9 @@ Begin Try
 						Tipo = @Tipo_Elect and
 						RIGHT('000' + RTRIM(Terminal), 3) = RIGHT('000' + RTRIM(@Codi_Terminal), 3)
 			End
+
 		Set @POSICION=4
+
 		Commit Transaction
 End Try
 Begin Catch
