@@ -1,0 +1,14 @@
+Alter procedure scwsp_tb_precioNormal_Verifica
+@IdContrato int
+As
+
+Set nocount on
+
+Begin
+
+	select * from Tb_PrecioNormal
+	where
+		TipoPrecio <> '0'
+		and IdContrato = @IdContrato
+
+End;
