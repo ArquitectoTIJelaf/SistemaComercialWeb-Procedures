@@ -1,0 +1,16 @@
+Alter proc scwsp_Tb_Bus_Poliza_consulta
+@codi_Empresa int,
+@codi_Bus varchar(6)
+As
+Begin
+	
+	Select
+		Nro_Poliza,
+		Fecha_Reg,
+		Fecha_Ven
+	From
+		Tb_Bus_Poliza
+	Where
+		codi_Empresa = @codi_Empresa
+		and codi_Bus = @codi_Bus
+End;
