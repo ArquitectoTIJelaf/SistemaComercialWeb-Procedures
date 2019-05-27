@@ -65,7 +65,8 @@ As
 			'' Fecha_Viaje, '' Fecha_Venta, '' Nacionalidad, 0 Precio_Venta, '' Recoge_En,
 			'0' Color, 'AB' FLAG_VENTA, '' Sigla, Codi_Origen, Codi_Destino, '' Boleto,
 			'' tipo, 0 id_venta, '' Nom_Origen, '' Nom_Destino,
-			0 Codi_Punto_Venta, '' Nom_Punto_Venta, 0 Codi_Usuario, '' Nom_Usuario
+			0 Codi_Punto_Venta, '' Nom_Punto_Venta, 0 Codi_Usuario, '' Nom_Usuario,
+			'' nume_solicitud
 		From
 			@Tabla
 
@@ -77,7 +78,8 @@ As
 			vd.Fecha_Viaje, v.FECH_VENTA Fecha_Venta, vd.Nacionalidad, v.PREC_VENTA Precio_Venta, v.RECO_VENTA Recoge_En,
 			ISNULL(cd.Color, '0') Color, FLAG_VENTA, pv.Sigla, v.cod_origen Codi_Origen, v.CODI_SUBRUTA Codi_Destino, vd.NUME_BOLETO Boleto,
 			v.tipo, v.id_venta, o.Descripcion Nom_Origen, d.Descripcion Nom_Destino,
-			v.Punto_Venta Codi_Punto_Venta, pv.Descripcion Nom_Punto_Venta, v.CLAV_USUARIO Codi_Usuario, u.Login Nom_Usuario
+			v.Punto_Venta Codi_Punto_Venta, pv.Descripcion Nom_Punto_Venta, v.CLAV_USUARIO Codi_Usuario, u.Login Nom_Usuario,
+			bc.nume_solicitud
 		From
 			VENTA v
 			Inner Join VENTA_DERIVADA vd on v.id_venta = vd.id_venta
@@ -86,6 +88,7 @@ As
 			Left Join Tb_Oficinas o on v.cod_origen = o.Codi_Sucursal
 			Left Join Tb_Oficinas d on v.CODI_SUBRUTA = d.Codi_Sucursal
 			Left Join Tb_Usuario u on v.CLAV_USUARIO = u.Codi_Usuario
+			Left Join Tb_BoletoxContrato bc on v.id_venta = bc.Id_Venta
 		Where
 			v.CODI_PROGRAMACION = @Codi_Programacion
 			and v.INDI_ANULADO = 'F'
@@ -100,7 +103,8 @@ As
 			'' Fecha_Viaje, '' Fecha_Venta, '' Nacionalidad, 0 Precio_Venta, '' Recoge_En,
 			'0' Color, FLAG_VENTA, '' Sigla, v.cod_origen Codi_Origen, v.CODI_SUBRUTA Codi_Destino, '' Boleto,
 			'' tipo, 0 id_venta, '' Nom_Origen, '' Nom_Destino,
-			0 Codi_Punto_Venta, '' Nom_Punto_Venta, 0 Codi_Usuario, '' Nom_Usuario
+			0 Codi_Punto_Venta, '' Nom_Punto_Venta, 0 Codi_Usuario, '' Nom_Usuario,
+			'' nume_solicitud
 		From
 			VENTA v
 		Where
@@ -123,7 +127,8 @@ As
 					SUBSTRING(br.Serie,2,4) + '-' + right('0000000' + cast(br.Numero as varchar), 7)
 			END Boleto,
 			Case Left(br.Serie,1) When 'B' Then 'B' When 'F' Then 'F' Else 'M' End tipo , 0 id_venta, o.Descripcion Nom_Origen, d.Descripcion Nom_Destino,
-			br.Codi_PuntoVenta Codi_Punto_Venta, pv.Descripcion Nom_Punto_Venta, br.Codi_Boletero Codi_Usuario, u.Login Nom_Usuario
+			br.Codi_PuntoVenta Codi_Punto_Venta, pv.Descripcion Nom_Punto_Venta, br.Codi_Boletero Codi_Usuario, u.Login Nom_Usuario,
+			'' nume_solicitud
 		From
 			Tb_BoletoRuta br
 			Inner Join Tb_Programacion p on br.Codi_Programacion = p.Codi_Programacion
@@ -145,7 +150,9 @@ As
 			'' Fecha_Viaje, '' Fecha_Venta, '' Nacionalidad, 0 Precio_Venta, '' Recoge_En,
 			'0' Color, 'AB' FLAG_VENTA, '' Sigla, Codi_Origen, Codi_Destino, '' Boleto,
 			'' tipo, 0 id_venta, '' Nom_Origen, '' Nom_Destino,
-			0 Codi_Punto_Venta, '' Nom_Punto_Venta, 0 Codi_Usuario, '' Nom_Usuario
+			0 Codi_Punto_Venta, '' Nom_Punto_Venta, 0 Codi_Usuario, '' Nom_Usuario,
+			'' nume_solicitud
 		From
 			@Tabla
 	End;
+
