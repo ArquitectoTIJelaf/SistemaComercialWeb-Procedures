@@ -12,7 +12,7 @@ WHERE
 	Tipo_Doc_id = @Tipo_Doc_Id
 	AND Numero_Doc = @Numero_Doc
 
-UNION
+UNION ALL
 
 SELECT
 	Id_Clientes, Tipo_Doc_id, Numero_Doc, Nombre_Clientes, Apellido_P, Apellido_M
@@ -23,7 +23,7 @@ WHERE
 	Tipo_Doc_id = @Tipo_Doc_Id
 	AND Numero_Doc = @Numero_Doc
 
-UNION
+UNION ALL
 
 SELECT
 	Id_Clientes, Tipo_Doc_id, Numero_Doc, Nombre_Clientes, Apellido_P, Apellido_M
