@@ -3,7 +3,7 @@ ALTER PROCEDURE scwsp_BuscarPasajero -- scwsp_BuscarPasajero '1','78005390'
 ,@Numero_Doc VARCHAR(15)
 AS
 
-SELECT
+SELECT TOP 1
 	Id_Clientes, Tipo_Doc_id, Numero_Doc, Nombre_Clientes, Apellido_P, Apellido_M
 	,fec_nac, edad, Direccion, telefono, ruc_contacto, sexo
 FROM
@@ -14,7 +14,7 @@ WHERE
 
 UNION ALL
 
-SELECT
+SELECT TOP 1
 	Id_Clientes, Tipo_Doc_id, Numero_Doc, Nombre_Clientes, Apellido_P, Apellido_M
 	,fec_nac, edad, Direccion, telefono, ruc_contacto, sexo
 FROM
@@ -25,7 +25,7 @@ WHERE
 
 UNION ALL
 
-SELECT
+SELECT TOP 1
 	Id_Clientes, Tipo_Doc_id, Numero_Doc, Nombre_Clientes, Apellido_P, Apellido_M
 	,fec_nac, edad, Direccion, telefono, ruc_contacto, sexo
 FROM
