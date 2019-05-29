@@ -16,9 +16,7 @@ AS
 BEGIN
 	BEGIN TRANSACTION
 
-	IF NOT EXISTS (SELECT TOP 1 1 FROM Tb_Cliente_Pasajes WHERE Tipo_Doc_id = @Tipo_Doc_Id AND Numero_Doc = @Numero_Doc)
-	BEGIN
-		INSERT INTO Tb_Cliente_Pasajes (
+	INSERT INTO Tb_Cliente_Pasajes (
 		Tipo_Doc_id
 		,Numero_Doc
 		,Nombre_Clientes
@@ -30,7 +28,7 @@ BEGIN
 		,telefono
 		,ruc_contacto
 		,sexo
-		)
+	)
 	VALUES (
 		@Tipo_Doc_Id
 		,@Numero_Doc
@@ -43,8 +41,7 @@ BEGIN
 		,@telefono
 		,@ruc_contacto
 		,@sexo
-		)
-	END;
+	)
 
 	SET @Id_Clientes = SCOPE_IDENTITY()
 
@@ -52,4 +49,4 @@ BEGIN
 		ROLLBACK TRANSACTION
 	ELSE
 		COMMIT TRANSACTION
-END
+END;
