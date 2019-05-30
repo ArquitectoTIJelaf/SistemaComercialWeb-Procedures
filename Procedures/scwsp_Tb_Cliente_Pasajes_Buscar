@@ -1,5 +1,5 @@
 Alter procedure scwsp_Tb_Cliente_Pasajes_Buscar -- scwsp_Tb_Cliente_Pasajes_Buscar 'gerardo'
-@nombre varchar(100)
+@Nombre varchar(100)
 As
 
 Set nocount on
@@ -28,5 +28,5 @@ Begin
 				Tb_Cliente_Remitente where Tipo_Doc_id = '1' AND LEN(Numero_Doc) = 8
 		) SUB
 		WHERE
-			SUB.Nombre_Completo LIKE '%' + @nombre + '%'
+			SUB.Nombre_Completo LIKE '%' + @Nombre + '%'
 End;
