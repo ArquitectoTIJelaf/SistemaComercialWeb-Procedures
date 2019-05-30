@@ -42,10 +42,12 @@ Begin
 		dest.Descripcion Nom_Destino,
 		dbo.Tb_Ruta_Intermedio.HORA_PASO Hora_Partida,
 		dbo.Tb_Ruta_Intermedio.NRO_RUTA_INT,
-		dbo.Tb_Ruta_Intermedio.DIAS
+		dbo.Tb_Ruta_Intermedio.DIAS,
 		----dbo.Tb_Maestro_Programacion.tr,
 		----dbo.Tb_Maestro_Programacion.dias as d_v,
 		----dbo.Tb_Maestro_Programacion.viaje
+
+		dbo.Tb_Servicio.DESC_SERVICIO
 	FROM
 		dbo.Tb_Ruta_Maestro WITH(nolock)
 		INNER JOIN  dbo.Tb_Maestro_Programacion WITH(nolock) ON dbo.Tb_Ruta_Maestro.NRO_RUTA  = dbo.Tb_Maestro_Programacion.NRO_RUTA
