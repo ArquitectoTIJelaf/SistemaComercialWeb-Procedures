@@ -16,33 +16,52 @@ AS
 BEGIN
 	BEGIN TRANSACTION
 
-	INSERT INTO Tb_Cliente_Pasajes (
-		Tipo_Doc_id
-		,Numero_Doc
-		,Nombre_Clientes
-		,Apellido_P
-		,Apellido_M
-		,fec_nac
-		,edad
-		,Direccion
-		,telefono
-		,ruc_contacto
-		,sexo
-	)
-	VALUES (
-		@Tipo_Doc_Id
-		,@Numero_Doc
-		,@Nombre_Clientes
-		,@Apellido_P
-		,@Apellido_M
-		,@fec_nac
-		,@edad
-		,@Direccion
-		,@telefono
-		,@ruc_contacto
-		,@sexo
-	)
-
+	IF NOT EXISTS (SELECT TOP 1 1 FROM Tb_Cliente_Pasajes WHERE Tipo_Doc_id = @Tipo_Doc_Id AND Numero_Doc = @Numero_Doc)
+		BEGIN
+			INSERT INTO Tb_Cliente_Pasajes (
+				Tipo_Doc_id
+				,Numero_Doc
+				,Nombre_Clientes
+				,Apellido_P
+				,Apellido_M
+				,fec_nac
+				,edad
+				,Direccion
+				,telefono
+				,ruc_contacto
+				,sexo
+			)
+			VALUES (
+				@Tipo_Doc_Id
+				,@Numero_Doc
+				,@Nombre_Clientes
+				,@Apellido_P
+				,@Apellido_M
+				,@fec_nac
+				,@edad
+				,@Direccion
+				,@telefono
+				,@ruc_contacto
+				,@sexo
+			)
+		END;
+	ELSE
+		BEGIN
+			UPDATE Tb_Cliente_Pasajes
+			SET Tipo_Doc_id = @Tipo_Doc_Id
+				,Numero_Doc = @Numero_Doc
+				,Nombre_Clientes = @Nombre_Clientes
+				,Apellido_P = @Apellido_P
+				,Apellido_M = @Apellido_M
+				,fec_nac = @fec_nac
+				,edad = @edad
+				,Direccion = @Direccion
+				,telefono = @telefono
+				,ruc_contacto = @ruc_contacto
+				,sexo = @sexo
+			WHERE Tipo_Doc_id = @Tipo_Doc_Id AND Numero_Doc = @Numero_Doc;
+		END;
+	
 	SET @Id_Clientes = SCOPE_IDENTITY()
 
 	IF @@ERROR <> 0
