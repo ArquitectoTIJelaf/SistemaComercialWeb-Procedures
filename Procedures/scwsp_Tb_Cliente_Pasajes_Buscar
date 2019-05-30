@@ -1,0 +1,32 @@
+Alter procedure scwsp_Tb_Cliente_Pasajes_Buscar -- scwsp_Tb_Cliente_Pasajes_Buscar 'gerardo'
+@nombre varchar(100)
+As
+
+Set nocount on
+
+Begin
+		SELECT TOP 10 *
+		FROM
+		(
+			SELECT
+				Numero_Doc, (Nombre_Clientes + ' ' + Apellido_p + ' ' + Apellido_M) as Nombre_Completo
+			FROM
+				Tb_Cliente_Pasajes  where Tipo_Doc_id = '1' AND LEN(Numero_Doc) = 8
+
+			UNION ALL
+
+			SELECT
+				Numero_Doc, (Nombre_Clientes + ' ' + Apellido_p + ' ' + Apellido_M) as Nombre_Completo
+			FROM
+				Tb_Cliente_Consignado where Tipo_Doc_id = '1' AND LEN(Numero_Doc) = 8
+
+			UNION ALL
+
+			SELECT
+				Numero_Doc, (Nombre_Clientes + ' ' + Apellido_p + ' ' + Apellido_M) as Nombre_Completo
+			FROM
+				Tb_Cliente_Remitente where Tipo_Doc_id = '1' AND LEN(Numero_Doc) = 8
+		) SUB
+		WHERE
+			SUB.Nombre_Completo LIKE '%' + @nombre + '%'
+End;
