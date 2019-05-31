@@ -1,0 +1,42 @@
+Alter Procedure scwsp_Tb_Descuentos_Boleto_Insertar
+@Usuario		smallint,
+@Oficina		smallint,
+@motivo			varchar(150),
+@Boleto			varchar(15),
+@Imp_Teorico	numeric(18,2),
+@Imp_Real		numeric(18,2),
+@Servicio		tinyint,
+@Origen			smallint,
+@Destino		smallint
+As
+
+  Begin Transaction
+
+	Insert into Tb_Descuentos_Boleto(
+		Usuario		,
+		Oficina		,
+		motivo		,
+		Boleto		,
+		Imp_Teorico	,
+		Imp_Real	,
+		Servicio	,
+		Origen		,
+		Destino
+	)
+	values
+	(
+		@Usuario		,
+		@Oficina		,
+		@motivo			,
+		@Boleto			,
+		@Imp_Teorico	,
+		@Imp_Real		,
+		@Servicio		,
+		@Origen			,
+		@Destino
+	)
+
+	If @@Error<>0
+		RollBack Transaction        
+	Else
+		Commit Transaction
