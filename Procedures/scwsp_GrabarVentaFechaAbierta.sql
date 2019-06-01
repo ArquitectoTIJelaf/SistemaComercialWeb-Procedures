@@ -23,6 +23,7 @@ Alter Procedure scwsp_GrabarVentaFechaAbierta
 @Tipo						Char(1),
 @Sexo						Char(1),
 @Tipo_Pago					Char(2),
+@Precio_Normal				Real,
 
 -- VENTA DERIVADA
 @Fecha_Viaje				SmallDateTime,
@@ -103,7 +104,7 @@ Begin Try
 			@Codi_Oficina,
 			@Codi_Programacion,
 			@Codi_Destino,
-			@Precio_Venta,
+			@Precio_Normal,
 			@Ruc_Cliente,
 			@Precio_Venta,
 			@Nume_Asiento,
