@@ -186,7 +186,7 @@ Begin Try
 					@ID_VENTA,
 					@Codi_Ruta,
 					@Codi_Servicio
-				)					
+				)
 			End
 
 		Set @POSICION=2
