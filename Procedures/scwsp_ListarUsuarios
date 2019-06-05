@@ -1,0 +1,17 @@
+ALTER PROCEDURE scwsp_ListarUsuarios
+AS
+BEGIN
+	SET NOCOUNT ON
+
+		SELECT
+			Codi_Usuario
+			,Login
+		FROM
+			Tb_Usuario
+		WHERE
+			St = 1
+		ORDER BY
+			Codi_Usuario
+
+	SET NOCOUNT OFF
+END
