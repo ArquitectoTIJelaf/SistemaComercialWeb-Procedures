@@ -1,0 +1,13 @@
+CREATE PROC scwsp_Tb_VENTA_Update_Manifiesto
+@Codi_Programacion int
+AS
+
+BEGIN
+	
+	UPDATE VENTA
+	SET
+		imp_manifiesto = null
+	WHERE
+		codi_Programacion = @codi_Programacion
+
+END;
