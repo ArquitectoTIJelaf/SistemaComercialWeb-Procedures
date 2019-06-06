@@ -1,0 +1,30 @@
+CREATE PROC scwsp_Tb_Manifiesto_Programacion_Update
+@Codi_Programacion int,
+@Codi_Sucursal smallint,
+@TipoApertura bit
+AS
+
+BEGIN
+	
+	IF(@TipoApertura = 1)
+	BEGIN
+		UPDATE Tb_Manifiesto_Programacion
+		SET
+			Imp = '0'
+		WHERE
+			codi_Programacion = 0
+			AND Codi_Sucursal = @Codi_Sucursal
+	END;
+
+	ELSE
+	BEGIN
+		UPDATE Tb_Manifiesto_Programacion
+		SET
+			Nume_Manifiesto = '',
+			Imp = '0'
+		WHERE
+			codi_Programacion = @codi_Programacion
+			AND Codi_Sucursal = @Codi_Sucursal
+	END;
+
+END;
