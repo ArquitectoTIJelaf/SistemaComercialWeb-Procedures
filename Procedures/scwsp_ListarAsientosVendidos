@@ -66,7 +66,8 @@ As
 			'0' Color, 'AB' FLAG_VENTA, '' Sigla, Codi_Origen, Codi_Destino, '' Boleto,
 			'' tipo, 0 id_venta, '' Nom_Origen, '' Nom_Destino,
 			0 Codi_Punto_Venta, '' Nom_Punto_Venta, 0 Codi_Usuario, '' Nom_Usuario,
-			'' nume_solicitud
+			'' nume_solicitud, '' HORA_VENTA, '' EmbarqueCod, '' EmbarqueDir,
+			'' EmbarqueHora
 		From
 			@Tabla
 
@@ -79,7 +80,8 @@ As
 			ISNULL(cd.Color, '0') Color, FLAG_VENTA, pv.Sigla, v.cod_origen Codi_Origen, v.CODI_SUBRUTA Codi_Destino, vd.NUME_BOLETO Boleto,
 			v.tipo, v.id_venta, o.Descripcion Nom_Origen, d.Descripcion Nom_Destino,
 			v.Punto_Venta Codi_Punto_Venta, pv.Descripcion Nom_Punto_Venta, v.CLAV_USUARIO Codi_Usuario, u.Login Nom_Usuario,
-			bc.nume_solicitud
+			bc.nume_solicitud, vd.HORA_VENTA, vd.Sube_En EmbarqueCod, emb.Descripcion EmbarqueDir,
+			vd.Hora_Embarque_Web EmbarqueHora
 		From
 			VENTA v
 			Inner Join VENTA_DERIVADA vd on v.id_venta = vd.id_venta
@@ -89,6 +91,7 @@ As
 			Left Join Tb_Oficinas d on v.CODI_SUBRUTA = d.Codi_Sucursal
 			Left Join Tb_Usuario u on v.CLAV_USUARIO = u.Codi_Usuario
 			Left Join Tb_BoletoxContrato bc on v.id_venta = bc.Id_Venta
+			Left Join Tb_Oficinas emb on vd.Sube_En = emb.Codi_Sucursal
 		Where
 			v.CODI_PROGRAMACION = @Codi_Programacion
 			and v.INDI_ANULADO = 'F'
@@ -104,7 +107,8 @@ As
 			'0' Color, FLAG_VENTA, '' Sigla, v.cod_origen Codi_Origen, v.CODI_SUBRUTA Codi_Destino, '' Boleto,
 			'' tipo, 0 id_venta, '' Nom_Origen, '' Nom_Destino,
 			0 Codi_Punto_Venta, '' Nom_Punto_Venta, 0 Codi_Usuario, '' Nom_Usuario,
-			'' nume_solicitud
+			'' nume_solicitud, '' HORA_VENTA, '' EmbarqueCod, '' EmbarqueDir,
+			'' EmbarqueHora
 		From
 			VENTA v
 		Where
@@ -128,15 +132,17 @@ As
 			END Boleto,
 			Case Left(br.Serie,1) When 'B' Then 'B' When 'F' Then 'F' Else 'M' End tipo , 0 id_venta, o.Descripcion Nom_Origen, d.Descripcion Nom_Destino,
 			br.Codi_PuntoVenta Codi_Punto_Venta, pv.Descripcion Nom_Punto_Venta, br.Codi_Boletero Codi_Usuario, u.Login Nom_Usuario,
-			'' nume_solicitud
+			'' nume_solicitud, '' HORA_VENTA, emb.Codi_Sucursal EmbarqueCod, emb.Descripcion EmbarqueDir,
+			'' EmbarqueHora
 		From
 			Tb_BoletoRuta br
 			Inner Join Tb_Programacion p on br.Codi_Programacion = p.Codi_Programacion
 			Left Join Tb_PuntoVenta pv on br.Codi_PuntoVenta = pv.Codi_puntoVenta
-			Inner Join Tb_Colores_Destino cd on br.Codi_Destino = cd.Codi_destino and p.Codi_Servicio = cd.codi_Servicio
+			Left Join Tb_Colores_Destino cd on br.Codi_Destino = cd.Codi_destino and p.Codi_Servicio = cd.codi_Servicio
 			Left Join Tb_Oficinas o on br.Codi_Origen = o.Codi_Sucursal
 			Left Join Tb_Oficinas d on br.Codi_Destino = d.Codi_Sucursal
 			Left Join Tb_Usuario u on br.Codi_Boletero = u.Codi_Usuario
+			Left Join Tb_Oficinas emb on o.Codi_Sucursal = emb.Codi_Sucursal
 		Where
 			br.Codi_Programacion = @Codi_Programacion
 			and br.Anulado= 'F'
@@ -151,8 +157,8 @@ As
 			'0' Color, 'AB' FLAG_VENTA, '' Sigla, Codi_Origen, Codi_Destino, '' Boleto,
 			'' tipo, 0 id_venta, '' Nom_Origen, '' Nom_Destino,
 			0 Codi_Punto_Venta, '' Nom_Punto_Venta, 0 Codi_Usuario, '' Nom_Usuario,
-			'' nume_solicitud
+			'' nume_solicitud, '' HORA_VENTA, '' EmbarqueCod, '' EmbarqueDir,
+			'' EmbarqueHora
 		From
 			@Tabla
 	End;
-
