@@ -66,7 +66,7 @@ As
 			'0' Color, 'AB' FLAG_VENTA, '' Sigla, Codi_Origen, Codi_Destino, '' Boleto,
 			'' tipo, 0 id_venta, '' Nom_Origen, '' Nom_Destino,
 			0 Codi_Punto_Venta, '' Nom_Punto_Venta, 0 Codi_Usuario, '' Nom_Usuario,
-			'' nume_solicitud, '' HORA_VENTA, '' EmbarqueCod, '' EmbarqueDir,
+			'' nume_solicitud, '' HORA_VENTA, 0 EmbarqueCod, '' EmbarqueDir,
 			'' EmbarqueHora
 		From
 			@Tabla
@@ -107,7 +107,7 @@ As
 			'0' Color, FLAG_VENTA, '' Sigla, v.cod_origen Codi_Origen, v.CODI_SUBRUTA Codi_Destino, '' Boleto,
 			'' tipo, 0 id_venta, '' Nom_Origen, '' Nom_Destino,
 			0 Codi_Punto_Venta, '' Nom_Punto_Venta, 0 Codi_Usuario, '' Nom_Usuario,
-			'' nume_solicitud, '' HORA_VENTA, '' EmbarqueCod, '' EmbarqueDir,
+			'' nume_solicitud, '' HORA_VENTA, 0 EmbarqueCod, '' EmbarqueDir,
 			'' EmbarqueHora
 		From
 			VENTA v
@@ -157,7 +157,7 @@ As
 			'0' Color, 'AB' FLAG_VENTA, '' Sigla, Codi_Origen, Codi_Destino, '' Boleto,
 			'' tipo, 0 id_venta, '' Nom_Origen, '' Nom_Destino,
 			0 Codi_Punto_Venta, '' Nom_Punto_Venta, 0 Codi_Usuario, '' Nom_Usuario,
-			'' nume_solicitud, '' HORA_VENTA, '' EmbarqueCod, '' EmbarqueDir,
+			'' nume_solicitud, '' HORA_VENTA, 0 EmbarqueCod, '' EmbarqueDir,
 			'' EmbarqueHora
 		From
 			@Tabla
