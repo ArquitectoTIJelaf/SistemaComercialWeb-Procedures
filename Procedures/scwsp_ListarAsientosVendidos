@@ -1,4 +1,4 @@
-Alter Procedure scwsp_ListarAsientosVendidos
+Alter Procedure scwsp_ListarAsientosVendidos --2090166, 516
 @Codi_Programacion		Int,
 @Nro_Viaje				Int
 As
@@ -80,7 +80,7 @@ As
 			ISNULL(cd.Color, '0') Color, FLAG_VENTA, pv.Sigla, v.cod_origen Codi_Origen, v.CODI_SUBRUTA Codi_Destino, vd.NUME_BOLETO Boleto,
 			v.tipo, v.id_venta, o.Descripcion Nom_Origen, d.Descripcion Nom_Destino,
 			v.Punto_Venta Codi_Punto_Venta, pv.Descripcion Nom_Punto_Venta, v.CLAV_USUARIO Codi_Usuario, u.Login Nom_Usuario,
-			bc.nume_solicitud, vd.HORA_VENTA, vd.Sube_En EmbarqueCod, emb.Descripcion EmbarqueDir,
+			ISNULL(bc.nume_solicitud, '') nume_solicitud, vd.HORA_VENTA, vd.Sube_En EmbarqueCod, emb.Descripcion EmbarqueDir,
 			vd.Hora_Embarque_Web EmbarqueHora
 		From
 			VENTA v
@@ -132,7 +132,7 @@ As
 			END Boleto,
 			Case Left(br.Serie,1) When 'B' Then 'B' When 'F' Then 'F' Else 'M' End tipo , 0 id_venta, o.Descripcion Nom_Origen, d.Descripcion Nom_Destino,
 			br.Codi_PuntoVenta Codi_Punto_Venta, pv.Descripcion Nom_Punto_Venta, br.Codi_Boletero Codi_Usuario, u.Login Nom_Usuario,
-			'' nume_solicitud, '' HORA_VENTA, emb.Codi_Sucursal EmbarqueCod, emb.Descripcion EmbarqueDir,
+			'' nume_solicitud,'' HORA_VENTA, emb.Codi_Sucursal EmbarqueCod, emb.Descripcion EmbarqueDir,
 			'' EmbarqueHora
 		From
 			Tb_BoletoRuta br
