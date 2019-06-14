@@ -1,0 +1,16 @@
+Alter proc Sc_wsp_Tb_Cierre_LiquiComi_Verifica
+@Codi_Programacion int,
+@Pvta int
+As
+
+Begin
+	select top 1
+		1
+	from
+		Tb_Cierre_LiquiComi
+	where
+		Codi_Programacion = @Codi_Programacion
+		and Tipo = 'P'
+		and estado = '1'
+		and Pvta = @Pvta
+End;
