@@ -1,0 +1,16 @@
+Alter proc scwsp_TB_VENTA_IDA_V_Consulta
+@id_venta int
+As
+
+select
+	v.NUME_ASIENTO,
+	v.SERIE_BOLETO,
+	v.NUME_BOLETO,
+	v.cod_origen,
+	v.CODI_SUBRUTA
+from
+	TB_VENTA_IDA_V vv
+	inner join venta v on vv.ID_VU = v.id_venta
+where
+	ID_IDA = @id_venta
+	and v.INDI_ANULADO = 'F'
