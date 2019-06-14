@@ -1,0 +1,9 @@
+Alter procedure scwsp_Tb_Panel_Clave_Consulta
+As
+
+Set nocount on
+Begin
+
+	Select * From tb_panel_control_sistema_clave  order by cast(codi_panel as int)
+
+End;
