@@ -1,4 +1,4 @@
-Alter Procedure scwsp_ListarAsientosVendidos -- scwsp_ListarAsientosVendidos 2090166, 516
+Alter Procedure scwsp_ListarAsientosVendidos -- scwsp_ListarAsientosVendidos2 2090166, 516
 @Codi_Programacion		Int,
 @Nro_Viaje				Int
 As
@@ -67,7 +67,7 @@ As
 			'' tipo, 0 id_venta, '' Nom_Origen, '' Nom_Destino,
 			0 Codi_Punto_Venta, '' Nom_Punto_Venta, 0 Codi_Usuario, '' Nom_Usuario,
 			'' nume_solicitud, '' HORA_VENTA, 0 EmbarqueCod, '' EmbarqueDir,
-			'' EmbarqueHora, '' imp_manifiesto
+			'' EmbarqueHora, '' imp_manifiesto, 0 CODI_SUCURSAL
 		From
 			@Tabla
 
@@ -81,7 +81,7 @@ As
 			v.tipo, v.id_venta, o.Descripcion Nom_Origen, d.Descripcion Nom_Destino,
 			v.Punto_Venta Codi_Punto_Venta, pv.Descripcion Nom_Punto_Venta, v.CLAV_USUARIO Codi_Usuario, u.Login Nom_Usuario,
 			ISNULL(bc.nume_solicitud, '') nume_solicitud, vd.HORA_VENTA, vd.Sube_En EmbarqueCod, emb.Descripcion EmbarqueDir,
-			vd.Hora_Embarque_Web EmbarqueHora, ISNULL(v.imp_manifiesto, '') imp_manifiesto
+			vd.Hora_Embarque_Web EmbarqueHora, ISNULL(v.imp_manifiesto, '') imp_manifiesto, V.CODI_SUCURSAL
 		From
 			VENTA v
 			Inner Join VENTA_DERIVADA vd on v.id_venta = vd.id_venta
@@ -108,7 +108,7 @@ As
 			'' tipo, 0 id_venta, '' Nom_Origen, '' Nom_Destino,
 			0 Codi_Punto_Venta, '' Nom_Punto_Venta, 0 Codi_Usuario, '' Nom_Usuario,
 			'' nume_solicitud, '' HORA_VENTA, 0 EmbarqueCod, '' EmbarqueDir,
-			'' EmbarqueHora, '' imp_manifiesto
+			'' EmbarqueHora, '' imp_manifiesto, 0 CODI_SUCURSAL
 		From
 			VENTA v
 		Where
@@ -133,7 +133,7 @@ As
 			Case Left(br.Serie,1) When 'B' Then 'B' When 'F' Then 'F' Else 'M' End tipo , 0 id_venta, o.Descripcion Nom_Origen, d.Descripcion Nom_Destino,
 			br.Codi_PuntoVenta Codi_Punto_Venta, pv.Descripcion Nom_Punto_Venta, br.Codi_Boletero Codi_Usuario, u.Login Nom_Usuario,
 			'' nume_solicitud,'' HORA_VENTA, emb.Codi_Sucursal EmbarqueCod, emb.Descripcion EmbarqueDir,
-			'' EmbarqueHora, ISNULL(br.Imp_Manifiesto, '') imp_manifiesto
+			'' EmbarqueHora, ISNULL(br.Imp_Manifiesto, '') imp_manifiesto, br.Codi_Sucursal CODI_SUCURSAL
 		From
 			Tb_BoletoRuta br
 			Inner Join Tb_Programacion p on br.Codi_Programacion = p.Codi_Programacion
@@ -158,7 +158,7 @@ As
 			'' tipo, 0 id_venta, '' Nom_Origen, '' Nom_Destino,
 			0 Codi_Punto_Venta, '' Nom_Punto_Venta, 0 Codi_Usuario, '' Nom_Usuario,
 			'' nume_solicitud, '' HORA_VENTA, 0 EmbarqueCod, '' EmbarqueDir,
-			'' EmbarqueHora, '' imp_manifiesto
+			'' EmbarqueHora, '' imp_manifiesto, 0 CODI_SUCURSAL
 		From
 			@Tabla
 	End;
