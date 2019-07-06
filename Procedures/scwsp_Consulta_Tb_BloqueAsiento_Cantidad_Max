@@ -1,0 +1,14 @@
+Alter proc scwsp_Consulta_Tb_BloqueAsiento_Cantidad_Max
+@Codi_Empresa tinyint
+As
+Begin
+	
+	--create table Tb_BloqueAsiento_Cantidad_Max (
+	--    Codi_Empresa tinyint primary key NOT NULL,
+	--    Cantidad smallint NOT NULL,
+	--);
+	
+	set nocount on;
+
+	select top 1 Cantidad from Tb_BloqueAsiento_Cantidad_Max where Codi_Empresa = @Codi_Empresa;
+End;
