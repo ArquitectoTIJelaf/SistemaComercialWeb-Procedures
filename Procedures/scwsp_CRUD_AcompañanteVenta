@@ -1,0 +1,64 @@
+Alter Procedure scwsp_CRUD_AcompañanteVenta
+@IDVENTA		Int,
+@TIPO_DOC		Varchar(2),
+@DNI			Varchar(15),
+@NOMBRE			Varchar(100),
+@FECHAN			DateTime,
+@EDAD			Varchar(2),
+@SEXO			Varchar(1),
+@PARENTESCO		Varchar(2),
+
+@ACCION tinyint -- 1: insert, 2: update
+
+AS
+SET NOCOUNT ON
+BEGIN
+	Begin Transaction
+
+	IF(@ACCION = 1)
+	BEGIN
+		Insert Into TB_VENTA_ACOMPAÑANTE
+		(
+			IDVENTA		,
+			TIPO_DOC	,
+			DNI			,
+			NOMBRE		,
+			FECHAN		,
+			EDAD		,
+			SEXO		,
+			PARENTESCO
+		)
+		Values
+		(
+			@IDVENTA	,
+			@TIPO_DOC	,
+			@DNI		,
+			@NOMBRE		,
+			@FECHAN		,
+			@EDAD		,
+			@SEXO		,
+			@PARENTESCO
+		)
+	END;
+	
+	ELSE IF(@ACCION = 2)
+	BEGIN
+		Update TB_VENTA_ACOMPAÑANTE
+		set
+			TIPO_DOC	= @TIPO_DOC,
+			DNI			= @DNI,
+			NOMBRE		= @NOMBRE,
+			FECHAN		= @FECHAN,
+			EDAD		= @EDAD,
+			SEXO		= @SEXO,
+			PARENTESCO	= @PARENTESCO
+		where
+			IDVENTA = @IDVENTA
+	END;
+			
+	If @@ERROR<>0
+		RollBack Transaction
+	Else
+		Commit Transaction
+
+END
