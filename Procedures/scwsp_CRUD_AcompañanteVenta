@@ -8,14 +8,14 @@ Alter Procedure scwsp_CRUD_AcompañanteVenta
 @SEXO			Varchar(1),
 @PARENTESCO		Varchar(2),
 
-@ACCION tinyint -- 1: insert, 2: update
+@ACTION_TYPE tinyint -- 1: insert, 2: update
 
 AS
 SET NOCOUNT ON
 BEGIN
 	Begin Transaction
 
-	IF(@ACCION = 1)
+	IF(@ACTION_TYPE = 1)
 	BEGIN
 		Insert Into TB_VENTA_ACOMPAÑANTE
 		(
@@ -41,7 +41,7 @@ BEGIN
 		)
 	END;
 	
-	ELSE IF(@ACCION = 2)
+	ELSE IF(@ACTION_TYPE = 2)
 	BEGIN
 		Update TB_VENTA_ACOMPAÑANTE
 		set
