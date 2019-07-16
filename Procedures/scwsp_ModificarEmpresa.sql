@@ -1,21 +1,21 @@
-Create Procedure scwsp_ModificarEmpresa
-@Ruc_Cliente	Varchar(11),
-@Razon_Social	Varchar(50),
-@Direccion		Varchar(50),
-@Telefono		Varchar(15)
-as		
-	Begin
-		Begin Transaction    			
+Alter PROCEDURE scwsp_ModificarEmpresa (
+	@Ruc_Cliente VARCHAR(11)
+	,@Razon_Social VARCHAR(100)
+	,@Direccion VARCHAR(200)
+	,@Telefono VARCHAR(15)
+	)
+AS
+BEGIN
+	BEGIN TRANSACTION
 
-			Update Tb_Ruc 
-			Set 
-				Razon_Social	=	Upper(@Razon_Social),
-				Direccion		=	@Direccion,
-				Telefono		=	@Telefono
-			Where Ruc_Cliente	=	@Ruc_Cliente
-		
-		If @@Error<>0
-			RollBack Transaction               
-		Else
-			Commit Transaction
-	End
+	UPDATE Tb_Ruc
+	SET Razon_Social = Upper(@Razon_Social)
+		,Direccion = @Direccion
+		,Telefono = @Telefono
+	WHERE Ruc_Cliente = @Ruc_Cliente
+
+	IF @@Error <> 0
+		ROLLBACK TRANSACTION
+	ELSE
+		COMMIT TRANSACTION
+END
