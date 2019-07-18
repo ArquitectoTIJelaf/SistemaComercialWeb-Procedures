@@ -3,18 +3,14 @@ ALTER PROCEDURE scwsp_BuscarVentaxId
 AS
 SELECT
 	v.CODI_EMPRESA
-	,v.PREC_VENTA AS Precio_Venta
-	,p.Codi_ruta
-	,vd.Fecha_Viaje
 	,v.SERIE_BOLETO
 	,v.NUME_BOLETO
-	,v.FECH_VENTA AS Fecha_Venta
-	,v.Tipo
-	,c.idtabla -- Para CrÃ©dito: IdPrecio
+	,c.idtabla -- Para Crédito: IdPrecio
+	,v.per_autoriza
+	,v.FECH_ANULACION
+	,v.CODI_PROGRAMACION
 FROM
 	VENTA v
-	INNER JOIN VENTA_DERIVADA vd ON v.id_venta = vd.id_venta
-	INNER JOIN Tb_Programacion p ON v.CODI_PROGRAMACION = p.Codi_Programacion
 	LEFT JOIN Tb_BoletoxContrato bc ON v.id_venta = bc.Id_Venta
 	LEFT JOIN tb_Control c ON bc.IdRegistro = c.Idboletocontrato
 WHERE

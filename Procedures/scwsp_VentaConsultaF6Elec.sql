@@ -13,7 +13,8 @@ ALTER PROCEDURE scwsp_VentaConsultaF6Elec
  @serie			INT,
  @nume			INT,
  @tipo			VARCHAR(1),
- @empresa		INT
+ @empresa		INT,
+ @subruta		INT
 AS
 BEGIN
 	SET NOCOUNT ON;
@@ -30,9 +31,10 @@ BEGIN
 	IF @nume <> 0		SET @CND = @CND + " AND V.nume_boleto = @nume"
 	IF @tipo <> ""		SET @CND = @CND + " AND V.tipo = @tipo"
 	IF @empresa <> 0	SET @CND = @CND + " AND V.CODI_EMPRESA = @empresa"
+	IF @Subruta <> 0	SET @CND = @CND + " AND V.codi_subruta = @subruta"
 	
 	SET @SQL=" 
-	SELECT TOP 10 
+	SELECT TOP 15 
 	 V.NOMBRE			AS NOMBRE,
 	 V.tipo				AS tipo, 
 	 V.serie_BOLETO		AS serie_BOLETO,
@@ -61,12 +63,10 @@ BEGIN
 						 @serie		INT,
 						 @nume		INT,
 						 @tipo		VARCHAR(1),
-						 @empresa	INT"
+						 @empresa	INT,
+						 @subruta	INT"
 	
-	EXEC SP_EXECUTESQL @SQL, @PARAMETROS, @nombre, @dni, @fecha ,@serie , @nume, @tipo, @empresa
+	EXEC SP_EXECUTESQL @SQL, @PARAMETROS, @nombre, @dni, @fecha ,@serie , @nume, @tipo, @empresa, @subruta
 
 	SET NOCOUNT OFF;
 END
-GO
-
-SELECT TOP 1 * FROM VENTA WHERE CODI_ESCA <> '' ORDER BY id_venta DESC
