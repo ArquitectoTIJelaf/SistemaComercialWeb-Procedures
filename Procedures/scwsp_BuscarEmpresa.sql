@@ -3,25 +3,32 @@ ALTER PROCEDURE scwsp_BuscarEmpresa
 AS
 
 BEGIN
-	SELECT
-		idruc AS Ruc_Cliente,
-		'' AS Razon_Social,
-		direccion AS Direccion,
-		'' AS Telefono
-	FROM
-		Tb_ruc_Direccion_Fiscal
-	WHERE
-		idruc = @Ruc_Cliente
+	SET NOCOUNT ON;
 
-	UNION ALL
+	SELECT TOP 1
+		*
+	FROM (
+		SELECT
+			idruc AS Ruc_Cliente,
+			razonsocial AS Razon_Social,
+			direccion AS Direccion,
+			'' AS Telefono
+		FROM
+			Tb_ruc_Direccion_Fiscal
+		WHERE
+			idruc = @Ruc_Cliente
 
-	SELECT
-		Ruc_Cliente
-		,Razon_Social
-		,Direccion
-		,Telefono
-	FROM
-		Tb_Ruc
-	WHERE
-		Ruc_Cliente = @Ruc_Cliente
+		UNION ALL
+
+		SELECT
+			Ruc_Cliente
+			,Razon_Social
+			,Direccion
+			,Telefono
+		FROM
+			Tb_Ruc
+		WHERE
+			Ruc_Cliente = @Ruc_Cliente
+	) AS SUB;
+	
 END
