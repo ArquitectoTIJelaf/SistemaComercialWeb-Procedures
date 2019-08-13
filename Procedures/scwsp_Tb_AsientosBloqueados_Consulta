@@ -1,0 +1,39 @@
+Alter Procedure scwsp_Tb_AsientosBloqueados_Consulta -- scwsp_Tb_AsientosBloqueados_Consulta 101120
+@Nro_Viaje 	Int
+As
+
+Begin
+	
+	Set NoCount On
+
+	Declare @Codi_Empresa	TinyInt = 0;
+	Declare @Codi_Sucursal	SmallInt = 0;
+	Declare @Codi_Ruta		SmallInt = 0;
+	Declare @Codi_Servicio	TinyInt = 0;
+	Declare @Turno			Varchar(10) = '';
+	
+	Select Top 1
+		@Codi_Empresa = mp.Codi_Empresa,
+		@Codi_Sucursal = rm.Codi_Sucursal,
+		@Codi_Ruta = rm.CODI_DESTINO,
+		@Codi_Servicio = rm.Codi_Servicio,
+		@Turno = mp.HORA 
+	From
+		Tb_Maestro_Programacion mp
+		Inner Join Tb_Ruta_Maestro rm on mp.NRO_RUTA = rm.NRO_RUTA
+	Where
+		mp.NRO_VIAJE = @Nro_Viaje
+	
+	Select Top 1
+		Asientos,
+		cod_OrigenP,
+		Cod_DestinoP
+	From
+		Tb_AsientosBloqueados
+	Where
+		Cod_OrigenB=@Codi_Sucursal
+		and Cod_DestinoB=@Codi_Ruta 
+		and Cod_Servicio=@Codi_Servicio
+		and cod_empresa=@Codi_Empresa
+		and horario=@Turno
+End;
