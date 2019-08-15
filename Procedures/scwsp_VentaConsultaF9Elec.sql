@@ -3,7 +3,7 @@
 -- Create date: 22/06/2019
 -- Description:	Datos de la Venta por Empresa y Número
 -- =============================================
-CREATE PROCEDURE scwsp_VentaConsultaF9Elec
+ALTER PROCEDURE scwsp_VentaConsultaF9Elec
  @serie		INT,
  @numero	INT,
  @empresa	INT,
@@ -53,8 +53,11 @@ BEGIN
 	,P.Codi_ruta            AS Codi_ruta
 	,P.Hora_programacion    AS Hora_programacion
 	,P.Codi_Servicio        AS Codi_Servicio
+	,VD.nacionalidad		AS nacionalidad
+	,VD.fecha_viaje			AS FECHA_VIAJE
 	FROM VENTA V WITH(NOLOCK)
-	INNER JOIN Tb_Programacion P ON V.CODI_PROGRAMACION = P.Codi_Programacion
+	 INNER JOIN Tb_Programacion P ON V.CODI_PROGRAMACION = P.Codi_Programacion
+	 LEFT JOIN VENTA_DERIVADA VD ON V.id_venta = VD.id_venta
 	WHERE  
 	 V.SERIE_BOLETO	= @SERIE	AND
 	 V.NUME_BOLETO	= @numero	AND
@@ -63,4 +66,3 @@ BEGIN
 
 	SET NOCOUNT OFF;
 END
-GO
