@@ -5,6 +5,12 @@ AS
 BEGIN
 	SET NOCOUNT ON;
 
+	--create table Tb_ruc_Direccion_Fiscal (
+	--    idruc varchar(11) primary key NOT NULL,
+	--    direccion varchar(250) NOT NULL,
+	--	razonsocial varchar(100) NOT NULL,
+	--);
+
 	SELECT TOP 1
 		*
 	FROM (
