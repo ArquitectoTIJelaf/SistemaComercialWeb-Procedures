@@ -1,0 +1,12 @@
+Alter proc scwsp_venta_promo_kmt_Verifica
+@id_venta int
+As
+
+Begin
+	select top 1
+		1
+	from
+		venta_promo_kmt
+	where
+		id_venta = @id_venta;
+End;
