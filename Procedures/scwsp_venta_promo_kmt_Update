@@ -1,0 +1,17 @@
+Alter proc scwsp_venta_promo_kmt_Update
+@id_venta_can int
+As
+
+Begin
+	update
+		venta_promo_kmt
+	set
+		usr_can = 0,
+		fecha_can = '01/01/1900',
+		emp_can = 0,
+		serie_can = 0,
+		numero_can = 0,
+		imp_bol = 0
+	where
+		id_venta_can = @id_venta_can;
+End;
