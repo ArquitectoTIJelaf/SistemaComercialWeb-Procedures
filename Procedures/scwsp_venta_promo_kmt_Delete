@@ -1,0 +1,10 @@
+Alter proc scwsp_venta_promo_kmt_Delete
+@id_venta int
+As
+
+Begin
+	delete
+		venta_promo_kmt
+	where
+		id_venta = @id_venta;
+End;
