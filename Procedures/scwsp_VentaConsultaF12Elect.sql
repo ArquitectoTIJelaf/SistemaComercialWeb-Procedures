@@ -39,8 +39,14 @@ BEGIN
 	,isnull(nacionalidad,'')	AS nacionalidad
 	,V.TIPO						AS TIPO
 	,V.Punto_Venta				AS Punto_Venta
+	,VD.Servicio				AS Servicio
+	,V.FECH_VENTA				AS FECH_VENTA
+	,V.tipo_pago				AS tipo_pago
+	,isnull(TPT.Codi_Tarjeta,'') AS Codi_Tarjeta
+	,isnull(TPT.Nume_tarjeta,'') AS Nume_tarjeta
 	FROM VENTA V WITH(NOLOCK)
 	 INNER JOIN VENTA_DERIVADA VD ON V.id_venta = VD.id_venta
+	 LEFT JOIN Tb_PagoTarjetaVenta TPT ON V.id_venta = TPT.Id_Venta
 	WHERE 
 	 V.serie_boleto	=@serie AND
 	 V.nume_boleto	=@numero AND 
