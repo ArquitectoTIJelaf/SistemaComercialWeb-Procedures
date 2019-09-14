@@ -58,6 +58,30 @@ As
 Begin Transaction
 
 Begin Try
+	
+	-- Validar asiento duplicado
+	Declare @asiento_exi as varchar(2) = '';
+
+	Select
+		@asiento_exi = nume_asiento
+	From
+		Venta
+	Where
+		CODI_PROGRAMACION = @CODI_PROGRAMACION
+		and NUME_ASIENTO = @NUME_ASIENTO
+		and CODI_SUBRUTA = @Codi_Destino
+		and cod_origen = @Codi_Origen
+		and INDI_ANULADO = 'F'
+		and CODI_PROGRAMACION <> 0
+		and NUME_ASIENTO <> 0;
+
+	If @asiento_exi<>'' 
+	Begin
+		Set @Id_Venta = -777;
+		RETURN;
+	End;
+	-- -------------------------
+
 	Declare @Porcentaje_IGV real = 0;
 	Select @Porcentaje_IGV = cast(Cod_Emp as real) From tablas Where COD_TAB='06' AND COD_TIP = @Codi_Documento;
 
@@ -288,7 +312,8 @@ Begin Try
 
 	Set @POSICION = 4;
 
-	Commit Transaction;
+	Commit Transaction
+;
 End Try
 
 Begin Catch
