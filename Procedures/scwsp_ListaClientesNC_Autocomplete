@@ -1,0 +1,78 @@
+SET QUOTED_IDENTIFIER OFF
+GO
+
+Alter procedure scwsp_ListaClientesNC_Autocomplete
+@TipoDocumento varchar(2),
+@Value varchar(100)
+As
+
+--SET QUOTED_IDENTIFIER OFF
+--GO
+
+Begin
+	SET NOCOUNT ON
+
+	--DECLARE @Value varchar(100) = '10780053904';
+	--DECLARE @TipoDocumento varchar(11) = '77';
+
+
+	DECLARE @DynamicQuery NVARCHAR(MAX) = '';
+
+	IF(@TipoDocumento = '77')
+	BEGIN
+		SET @DynamicQuery = "
+			SELECT TOP 10
+				Ruc_Cliente as id, Razon_Social as label
+			FROM
+				Tb_Ruc
+			WHERE
+				LEN(Ruc_Cliente) = 11
+				" +
+		CASE ISNUMERIC(@Value)
+			WHEN 0
+				THEN "AND Razon_Social LIKE '%" + @Value + "%'"
+			WHEN 1
+				THEN "AND Ruc_Cliente LIKE '" + @Value + "%'"
+		END + "";
+	END;
+	ELSE
+	BEGIN
+		SET @DynamicQuery = "
+		SELECT TOP 1
+			*
+		FROM (
+			SELECT
+				Numero_Doc as id, (Nombre_Clientes + ' ' + Apellido_P + ' ' + Apellido_M) as label
+			FROM
+				Tb_Cliente_Pasajes
+			WHERE
+				Tipo_Doc_id = '" + @TipoDocumento + "'
+				AND Numero_Doc = '" + @Value + "'
+
+			UNION ALL
+
+			SELECT
+				Numero_Doc as id, (Nombre_Clientes + ' ' + Apellido_P + ' ' + Apellido_M) as label
+			FROM
+				Tb_Cliente_Consignado
+			WHERE
+				Tipo_Doc_id = '" + @TipoDocumento + "'
+				AND Numero_Doc = '" + @Value + "'
+
+			UNION ALL
+
+			SELECT
+				Numero_Doc as id, (Nombre_Clientes + ' ' + Apellido_P + ' ' + Apellido_M) as label
+			FROM
+				Tb_Cliente_Remitente
+			WHERE
+				Tipo_Doc_id = '" + @TipoDocumento + "'
+				AND Numero_Doc = '" + @Value + "'
+		) AS SUB";
+	END;
+
+	EXECUTE sp_executesql @DynamicQuery;
+	--SELECT @DynamicQuery;
+
+	SET NOCOUNT OFF
+End;
