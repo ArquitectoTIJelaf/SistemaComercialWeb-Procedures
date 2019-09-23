@@ -1,13 +1,55 @@
-Alter Procedure scwsp_ObtenerTotalVentas
-@Codi_Programacion		Int,
-@Codi_Origen			SmallInt,
-@Codi_Destino			SmallInt
-as
-SET NOCOUNT ON
-	Begin
-		Select Count(1) CantidadVenta From VENTA 
-		Where CODI_PROGRAMACION=@Codi_Programacion
-		and cod_origen=@Codi_Origen
-		and CODI_SUBRUTA=@Codi_Destino
-		and INDI_ANULADO='F'
-	End
+ALTER PROCEDURE scwsp_ObtenerTotalVentas
+@Codi_Programacion	INT,
+@Nro_Viaje			INT,
+@Codi_Origen		SMALLINT,
+@Codi_Destino		SMALLINT
+AS
+
+SET NOCOUNT ON;
+
+BEGIN
+	
+	--DECLARE @Codi_Programacion	INT = 55998;
+	--DECLARE @Nro_Viaje			INT = 92364;
+	--DECLARE @Codi_Origen		SMALLINT = 4;
+	--DECLARE @Codi_Destino		SMALLINT = 35;
+
+	DECLARE @Orden_Origen SMALLINT = (
+		SELECT TOP 1 CAST(ISNULL(orden, '0') AS SMALLINT) FROM TB_RUTA_INTERMEDIO
+		WHERE CODI_SUCURSAL = @Codi_Origen AND NRO_VIAJE = @Nro_Viaje
+		ORDER BY NRO_RUTA_INT DESC
+	);
+
+	DECLARE @Orden_Destino SMALLINT = (
+		SELECT TOP 1 CAST(ISNULL(orden, '0') AS SMALLINT) FROM TB_RUTA_INTERMEDIO
+		WHERE CODI_SUCURSAL = @Codi_Destino AND NRO_VIAJE = @Nro_Viaje
+		ORDER BY NRO_RUTA_INT DESC
+	);
+
+	SELECT COUNT(1)
+		CantidadVenta
+	FROM
+		VENTA V
+		LEFT JOIN
+		(
+			SELECT DISTINCT CAST(ISNULL(orden, '0') AS SMALLINT) orden, CODI_SUCURSAL
+			FROM TB_RUTA_INTERMEDIO
+			WHERE NRO_VIAJE = @Nro_Viaje
+		) ORD_ORI
+			ON V.cod_origen = ORD_ORI.CODI_SUCURSAL
+		LEFT JOIN
+		(
+			SELECT DISTINCT CAST(ISNULL(orden, '0') AS SMALLINT) orden, CODI_SUCURSAL
+			FROM TB_RUTA_INTERMEDIO
+			WHERE NRO_VIAJE = @Nro_Viaje
+		) ORD_DES
+			ON V.CODI_SUBRUTA = ORD_DES.CODI_SUCURSAL
+	WHERE
+		V.CODI_PROGRAMACION = @Codi_Programacion
+		AND CODI_PROGRAMACION > 0
+		AND CAST(ISNULL(ORD_DES.orden, '0') AS SMALLINT) > @Orden_Origen
+		AND CAST(ISNULL(ORD_ORI.orden, '0') AS SMALLINT) < @Orden_Destino
+		AND FLAG_VENTA NOT IN ('R', 'X', 'O')
+		AND V.INDI_ANULADO = 'F'
+		AND V.NUME_ASIENTO > 0
+END;
