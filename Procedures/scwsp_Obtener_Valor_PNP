@@ -1,0 +1,47 @@
+ALTER PROCEDURE scwsp_Obtener_Valor_PNP -- scwsp_Obtener_Valor_PNP '10', 2089285
+@tabla varchar(3),
+@CODI_PROGRAMACION int
+AS
+
+SET NOCOUNT ON;
+
+BEGIN
+	
+	Declare @validate bit = 1;
+
+	Declare @canPNP smallint = (
+		SELECT top 1
+			cod_tip
+		FROM
+			tablas
+		WHERE
+			cod_tab = @tabla
+	);
+
+	Declare @nPNP smallint = (
+		SELECT
+			Count(1)
+		FROM
+			VENTA
+		WHERE
+			CODI_PROGRAMACION = @CODI_PROGRAMACION
+			AND CODI_PROGRAMACION > 0
+			AND FLAG_VENTA = 'S'
+			AND INDI_ANULADO = 'F'
+	);
+
+	IF(ISNULL(@canPNP, 0) > 0)
+	BEGIN
+		IF(ISNULL(@nPNP, 0) >= ISNULL(@canPNP, 0))
+			BEGIN
+				SET @validate = 0;
+			END;
+		ELSE
+			BEGIN
+				SET @validate = 1;
+			END;
+	END;
+
+	SELECT @validate 'validate';
+
+END;
