@@ -1,9 +1,13 @@
 -- =============================================
--- Author:		H�ctor Salazar
+-- Author:		Héctor Salazar
 -- Create date: 06/08/2019
 -- Description:	Datos Necesario para Anular Reintegro
 -- =============================================
-CREATE PROCEDURE scwsp_VentaReintegroConsultaAnulEle
+-- Author:		Gerardo Gómez
+-- Modify date: 18/09/2019
+-- Description:	ADD: CODI_PROGRAMACION > 0
+-- =============================================
+ALTER PROCEDURE scwsp_VentaReintegroConsultaAnulEle
  @ser	varchar(3), 
  @bol	varchar(7),        
  @emp	varchar(2),
@@ -34,7 +38,8 @@ BEGIN
 	 tipo			= @tipo AND 
 	 codi_Empresa	= @emp	AND 
 	 indi_anulado	= 'F'	AND
-	 (flag_venta = 'O' or flag_venta = '1')          
-	 
+	 (flag_venta = 'O' or flag_venta = '1')  AND        
+	 CODI_PROGRAMACION > 0
+
 	SET NOCOUNT OFF;
 END
