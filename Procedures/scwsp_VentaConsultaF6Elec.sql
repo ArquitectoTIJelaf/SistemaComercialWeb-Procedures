@@ -1,10 +1,15 @@
 SET QUOTED_IDENTIFIER OFF
 GO
+
 -- =============================================
--- Author:		H�ctor Salazar
+-- Author:		Héctor Salazar
 -- Create date: 28/06/2019
 -- Description:	Lista Ventas con Fecha Abierta
 -- Dependency:	SET QUOTED_IDENTIFIER OFF
+-- =============================================
+-- Author:		Gerardo Gómez
+-- Modify date: 17/09/2019
+-- Description:	ADD: (V.FLAG_VENTA NOT IN ('R', 'X', 'O')) AND (V.INDI_ANULADO = 'F')
 -- =============================================
 ALTER PROCEDURE scwsp_VentaConsultaF6Elec
  @nombre		VARCHAR(30),
@@ -54,7 +59,7 @@ BEGIN
 	 V.CODI_ESCA		AS CODI_ESCA
 	FROM VENTA V WITH(NOLOCK)
 	 INNER JOIN VENTA_DERIVADA D ON V.id_venta = D.id_venta
-	WHERE  (V.CODI_PROGRAMACION = 0) AND (V.flag_venta <> 'O') " + @CND +"	  
+	WHERE  (V.CODI_PROGRAMACION = 0) AND (V.FLAG_VENTA NOT IN ('R', 'X', 'O')) AND (V.INDI_ANULADO = 'F')" + @CND +"	  
 	ORDER BY fech_venta"
 	--PRINT @SQL
 	SET @PARAMETROS ="	 @nombre	VARCHAR(30),
