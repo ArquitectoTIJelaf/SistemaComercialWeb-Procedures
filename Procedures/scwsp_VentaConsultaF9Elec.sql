@@ -1,7 +1,15 @@
 -- =============================================
--- Author:		H�ctor Salazar
+-- Author:		Héctor Salazar
 -- Create date: 22/06/2019
--- Description:	Datos de la Venta por Empresa y N�mero
+-- Description:	Datos de la Venta por Empresa y Número
+-- =============================================
+-- Author:		Héctor Salazar
+-- Modify date: 26/08/2019
+-- Description:	Add Hora Viaje
+-- =============================================
+-- Author:		Gerardo Gómez
+-- Modify date: 17/09/2019
+-- Description:	ADD: V.CODI_PROGRAMACION > 0 AND V.FLAG_VENTA NOT IN ('R', 'X', '7') AND V.INDI_ANULADO = 'F'
 -- =============================================
 ALTER PROCEDURE scwsp_VentaConsultaF9Elec
  @serie		INT,
@@ -55,6 +63,7 @@ BEGIN
 	,P.Codi_Servicio        AS Codi_Servicio
 	,VD.nacionalidad		AS nacionalidad
 	,VD.fecha_viaje			AS FECHA_VIAJE
+	,VD.Hora_Viaje			AS Hora_Viaje
 	FROM VENTA V WITH(NOLOCK)
 	 INNER JOIN Tb_Programacion P ON V.CODI_PROGRAMACION = P.Codi_Programacion
 	 LEFT JOIN VENTA_DERIVADA VD ON V.id_venta = VD.id_venta
@@ -62,7 +71,10 @@ BEGIN
 	 V.SERIE_BOLETO	= @SERIE	AND
 	 V.NUME_BOLETO	= @numero	AND
 	 V.codi_empresa	= @empresa	AND
-	 V.tipo			= @tipo
+	 V.tipo			= @tipo		AND
+	 V.CODI_PROGRAMACION > 0	AND
+	 V.FLAG_VENTA NOT IN ('R', 'X', '7') AND
+	 V.INDI_ANULADO = 'F'
 
 	SET NOCOUNT OFF;
 END
