@@ -1,7 +1,11 @@
 -- =============================================
--- Author:		H�ctor Salazar
+-- Author:		Héctor Salazar
 -- Create date: 20/07/2019
 -- Description:	Lista datos del cliente del boleto
+-- =============================================
+-- Author:		Gerardo Gómez
+-- Modify date: 18/09/2019
+-- Description:	ADD: V.CODI_PROGRAMACION > 0 AND V.FLAG_VENTA NOT IN ('R', 'X', '7') AND V.INDI_ANULADO = 'F'
 -- =============================================
 ALTER PROCEDURE scwsp_VentaConsultaF12Elect
 @serie		INT,
@@ -52,7 +56,9 @@ BEGIN
 	 V.nume_boleto	=@numero AND 
 	 V.codi_empresa	=@Empresa AND 
 	 V.tipo			=@Tipo AND
-	 V.FLAG_VENTA <> '7'
+	 V.CODI_PROGRAMACION > 0 AND
+	 V.FLAG_VENTA NOT IN ('R', 'X', '7') AND
+	 V.INDI_ANULADO = 'F'
 
 	SET NOCOUNT OFF;
 END
