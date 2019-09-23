@@ -1,22 +1,46 @@
-ALTER PROC scwsp_Tb_Usuario_Autocomplete -- scwsp_Tb_Usuario_Autocomplete 'JULIO'  
-	@LOGIN VARCHAR(30)
-AS
-BEGIN
-	SET NOCOUNT ON
+SET QUOTED_IDENTIFIER OFF
+GO
 
+ALTER PROC scwsp_Tb_Usuario_Autocomplete -- scwsp_Tb_Usuario_Autocomplete '23'
+@LOGIN VARCHAR(30)
+AS
+
+SET NOCOUNT ON;
+
+BEGIN
+	
 	--SET QUOTED_IDENTIFIER OFF
 	--GO
 
+	 --DECLARE @LOGIN VARCHAR(30) = '';
+
 	DECLARE @DynamicQuery NVARCHAR(MAX);
 
-	SET @DynamicQuery = "SELECT Codi_Usuario, LOGIN AS Login FROM Tb_Usuario WHERE" + CASE ISNUMERIC(@LOGIN)
-			WHEN 0
-				THEN ("(Login LIKE '%" + @LOGIN + "%')")
-			WHEN 1
-				THEN ("(Codi_Usuario LIKE '" + @LOGIN + "%')")
-			END + " ORDER BY Login ASC OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY";
+	SET @DynamicQuery = "
+	SELECT TOP 10
+		*
+	FROM (
+		SELECT
+			Codi_Usuario,
+			LOGIN AS Login
+		FROM
+			Tb_Usuario
+		WHERE
+			St = 1
+			" +
+			CASE ISNUMERIC(@LOGIN)
+				WHEN 0 THEN "AND Login LIKE '%" + @LOGIN + "%'"	
+				WHEN 1 THEN "AND Codi_Usuario LIKE '" + @LOGIN + "%'"
+			END + "
+	) SUB
+	ORDER BY
+		" +
+			CASE ISNUMERIC(@LOGIN)
+				WHEN 0 THEN "SUB.Login;"	
+				WHEN 1 THEN "SUB.Codi_Usuario;"
+			END;
 
-	EXECUTE sp_executesql @DynamicQuery
+	EXECUTE sp_executesql @DynamicQuery;
+	--select @DynamicQuery;
 
-	SET NOCOUNT OFF
-END
+END;
