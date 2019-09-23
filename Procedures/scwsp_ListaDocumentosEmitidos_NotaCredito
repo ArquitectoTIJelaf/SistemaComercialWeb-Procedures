@@ -1,0 +1,40 @@
+Alter procedure scwsp_ListaDocumentosEmitidos_NotaCredito
+@ruc			varchar(11),
+@Fecha1			datetime,
+@Fecha2			datetime,
+@serie			int,
+@numero			int,
+@emp			int,
+@tipo			varchar(1),
+
+@tipoDocumento	char(2),
+@tipoPasEnc		char(1)
+As
+
+Set nocount on;
+
+Begin
+	IF(@tipoPasEnc = 'P') -- PASAJE
+	BEGIN
+		IF(@tipoDocumento = '06') -- Ruc
+		BEGIN
+			EXEC Usp_venta_NotaCred @ruc, @Fecha1, @Fecha2, @serie, @numero, @emp, @tipo;
+		END;
+		ELSE IF(@tipoDocumento = '01') -- Dni
+		BEGIN
+			EXEC Usp_venta_NotaCredDni @ruc, @Fecha1, @Fecha2, @serie, @numero, @emp, @tipo;
+		END;
+		ELSE IF(@tipoDocumento = '03') -- Cárnet de extranjería
+		BEGIN
+			EXEC Usp_venta_NotaCredPAS @ruc, @Fecha1, @Fecha2, @serie, @numero, @emp, @tipo; -- Busca: tipo_doc='03'
+		END;
+		ELSE -- (@tipoDocumento = '07') -- Pasaporte
+		BEGIN
+			EXEC Usp_venta_NotaCredCext @ruc, @Fecha1, @Fecha2, @serie, @numero, @emp, @tipo; -- Busca: tipo_doc='07'
+		END;
+	END;
+	ELSE -- (@tipoPasEnc = 'E') -- ENCOMIENDA
+	BEGIN
+		EXEC Usp_Encomienda_NotaCred  @ruc, @Fecha1, @Fecha2, @serie, @numero, @emp, @tipo;
+	END;
+End;
