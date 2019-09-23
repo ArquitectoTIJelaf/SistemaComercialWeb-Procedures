@@ -19,4 +19,5 @@ Begin
 		and codi_Empresa = @emp
 		and (flag_venta = 'O' or flag_venta = '1')
 		and indi_anulado = 'F'
+		and CODI_PROGRAMACION > 0
 End;
