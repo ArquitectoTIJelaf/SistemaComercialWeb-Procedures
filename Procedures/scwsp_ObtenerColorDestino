@@ -1,0 +1,18 @@
+Alter Procedure scwsp_ObtenerColorDestino
+@Codi_Destino		SmallInt,
+@Codi_Servicio		TinyInt
+As
+
+SET NOCOUNT ON;
+
+BEGIN
+	
+	SELECT TOP 1
+		ISNULL(color, '0') color
+	FROM
+		Tb_Colores_Destino
+	WHERE
+		Codi_destino = @Codi_Destino
+		AND codi_Servicio = @Codi_Servicio;
+
+END;
