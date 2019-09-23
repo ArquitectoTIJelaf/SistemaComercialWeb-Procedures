@@ -1,0 +1,29 @@
+ALTER PROCEDURE scwsp_tb_viaje_programacion_Update_Cnt
+@CODI_PROGRAMACION int
+AS
+
+SET NOCOUNT ON;
+
+BEGIN
+	
+	Declare @n_asiento int = (
+		SELECT
+			Count(1)
+		FROM
+			VENTA
+		WHERE
+			CODI_PROGRAMACION = @CODI_PROGRAMACION
+			AND CODI_PROGRAMACION > 0
+			AND FLAG_VENTA NOT IN ('R', 'X', 'O')
+			AND INDI_ANULADO = 'F'
+	);
+
+	Update
+		tb_viaje_programacion
+	Set
+		n_asiento = @n_asiento
+	Where
+		Codi_programacion = @CODI_PROGRAMACION
+		AND CODI_PROGRAMACION > 0;
+
+END;
