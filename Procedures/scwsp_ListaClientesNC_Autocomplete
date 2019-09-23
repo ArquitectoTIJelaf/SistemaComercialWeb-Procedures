@@ -1,27 +1,31 @@
 SET QUOTED_IDENTIFIER OFF
 GO
 
-Alter procedure scwsp_ListaClientesNC_Autocomplete
+Alter procedure scwsp_ListaClientesNC_Autocomplete -- scwsp_ListaClientesNC_Autocomplete '06', 'gomez'
 @TipoDocumento varchar(2),
 @Value varchar(100)
 As
 
---SET QUOTED_IDENTIFIER OFF
---GO
+SET NOCOUNT ON;
 
 Begin
-	SET NOCOUNT ON
+	
+	--SET QUOTED_IDENTIFIER OFF
+	--GO
 
-	--DECLARE @Value varchar(100) = '10780053904';
-	--DECLARE @TipoDocumento varchar(11) = '77';
+	--DECLARE @TipoDocumento varchar(11) = '06';
 
+	--DECLARE @Value varchar(100) = 'gerard';
 
 	DECLARE @DynamicQuery NVARCHAR(MAX) = '';
 
-	IF(@TipoDocumento = '77')
+	IF(@TipoDocumento = '06')
 	BEGIN
 		SET @DynamicQuery = "
-			SELECT TOP 10
+		SELECT TOP 10
+			*
+		FROM (
+			SELECT
 				Ruc_Cliente as id, Razon_Social as label
 			FROM
 				Tb_Ruc
@@ -33,7 +37,16 @@ Begin
 				THEN "AND Razon_Social LIKE '%" + @Value + "%'"
 			WHEN 1
 				THEN "AND Ruc_Cliente LIKE '" + @Value + "%'"
-		END + "";
+		END + "
+		) SUB
+			ORDER BY
+				" +
+		CASE ISNUMERIC(@Value)
+			WHEN 0
+				THEN "SUB.label;"	
+			WHEN 1
+				THEN "SUB.id;"
+		END;
 	END;
 	ELSE
 	BEGIN
@@ -74,5 +87,4 @@ Begin
 	EXECUTE sp_executesql @DynamicQuery;
 	--SELECT @DynamicQuery;
 
-	SET NOCOUNT OFF
 End;
