@@ -1,0 +1,47 @@
+ALTER PROCEDURE scwsp_tb_Mantenimiento_ClaveAnuRei_Autocomplete
+@value VARCHAR(30)
+AS
+
+SET NOCOUNT ON;
+
+BEGIN
+	
+	--SET QUOTED_IDENTIFIER OFF
+	--GO
+
+	--DECLARE @value VARCHAR(30) = '1';
+
+	DECLARE @DynamicQuery NVARCHAR(MAX);
+
+	SET @DynamicQuery = "
+	SELECT TOP 10
+		*
+	FROM (
+		SELECT
+			MCAR.Codi_Usuario AS USUARIO, 
+			U.Login	AS nomb_usuario
+		FROM
+			tb_Mantenimiento_ClaveAnuRei MCAR WITH(NOLOCK)
+			INNER JOIN Tb_Usuario U ON MCAR.Codi_Usuario = U.Codi_Usuario
+		WHERE
+		" +
+		CASE ISNUMERIC(@value)
+			WHEN 0
+				THEN " U.Login LIKE '%" + @value + "%'"
+			WHEN 1
+				THEN " MCAR.Codi_Usuario LIKE '" + @value + "%'"
+		END + "
+	) SUB
+	ORDER BY
+		" +
+		CASE ISNUMERIC(@value)
+			WHEN 0
+				THEN "SUB.nomb_usuario;"	
+			WHEN 1
+				THEN "SUB.USUARIO;"
+		END;
+
+	EXECUTE sp_executesql @DynamicQuery;
+	--select @DynamicQuery;
+
+END;
