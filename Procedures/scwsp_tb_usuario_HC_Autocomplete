@@ -1,0 +1,70 @@
+SET QUOTED_IDENTIFIER OFF
+GO
+
+ALTER PROC scwsp_tb_usuario_HC_Autocomplete -- scwsp_tb_usuario_HC_Autocomplete 'Ger', 0, 0
+@descripcion VARCHAR(30),
+@suc SMALLINT,
+@Pv SMALLINT
+AS
+
+SET NOCOUNT ON;
+
+BEGIN
+	
+	--SET QUOTED_IDENTIFIER OFF
+	--GO
+
+	--DECLARE @descripcion VARCHAR(30) = '1';
+	--DECLARE @suc SMALLINT = 0;
+	--DECLARE @Pv SMALLINT = 0;
+
+	DECLARE @DynamicQuery NVARCHAR(MAX);
+
+	SET @DynamicQuery = "
+	SELECT TOP 10
+		*
+	FROM (
+		SELECT
+			Codi_Usuario AS Codigo,
+			Login AS descripcion
+		FROM
+			Tb_Usuario With(NoLock)
+		WHERE
+		" +
+		CASE ISNUMERIC(@descripcion)
+			WHEN 0
+				THEN " Login LIKE '%" + @descripcion + "%'"
+			WHEN 1
+				THEN " Codi_Usuario LIKE '" + @descripcion + "%'"
+		END +
+		CASE
+			WHEN @suc > 0 THEN
+				" AND codi_sucursal =" + CONVERT(VARCHAR(5), @suc)
+			ELSE
+				" "
+		END +
+		CASE
+			WHEN @Pv > 0 THEN
+				" AND codi_puntoVenta =" + CONVERT(VARCHAR(5), @Pv)
+			ELSE
+				" "
+		END +
+		"
+		 AND login <> 'JLMROOT'
+		 AND LOGIN <> 'ROOTJLM'
+		 AND ST = '1'
+		 AND VER = '1'
+	) SUB
+	ORDER BY
+		" +
+			CASE ISNUMERIC(@descripcion)
+				WHEN 0
+					THEN "SUB.descripcion;"	
+				WHEN 1
+					THEN "SUB.Codigo;"
+			END;
+
+	EXECUTE sp_executesql @DynamicQuery
+	--select @DynamicQuery;
+
+END;
