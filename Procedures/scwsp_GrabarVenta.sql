@@ -312,8 +312,7 @@ Begin Try
 
 	Set @POSICION = 4;
 
-	Commit Transaction
-;
+	Commit Transaction;
 End Try
 
 Begin Catch
