@@ -5,7 +5,7 @@ SELECT
 	v.CODI_EMPRESA
 	,v.SERIE_BOLETO
 	,v.NUME_BOLETO
-	,c.idtabla -- Para Crédito: IdPrecio
+	,c.idtabla -- Para CrÃ©dito: IdPrecio
 	,v.per_autoriza
 	,v.FECH_ANULACION
 	,v.CODI_PROGRAMACION
@@ -16,4 +16,5 @@ FROM
 WHERE
 	v.id_venta = @Id_venta
 	AND v.INDI_ANULADO = 'F'
-	AND v.FLAG_VENTA <> 'X'
+	AND v.FLAG_VENTA NOT IN ('X', 'R', 'O')
+	AND v.CODI_PROGRAMACION > 0;
