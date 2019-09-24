@@ -1,0 +1,26 @@
+-- =============================================
+-- Author:		Héctor Salazar
+-- Create date: 23/09/2019
+-- Description:	Obtiene Resumen por Programación
+-- =============================================
+ALTER PROCEDURE scwsp_ListaResumenProgramacion
+ @CODI_PROGRAMACION INT,
+ @CODI_SUCURSAL		SMALLINT
+AS
+BEGIN
+	
+	SET NOCOUNT ON;
+
+	IF(@CODI_PROGRAMACION <> 0 and @CODI_SUCURSAL <> 0)
+	BEGIN
+		select
+		(select COUNT(1) from VENTA V WHERE V.FLAG_VENTA IN ('V','I','Y','1','S','T','TG','8') AND V.CODI_PROGRAMACION = @CODI_PROGRAMACION AND V.CODI_SUCURSAL = @CODI_SUCURSAL) AS VTS,  
+		(select COUNT(1) from VENTA V WHERE V.FLAG_VENTA IN ('V','I','Y','1','S','T','TG','8') AND V.CODI_PROGRAMACION = @CODI_PROGRAMACION	) AS VTT,  
+		(select COUNT(1) from VENTA V WHERE FLAG_VENTA = '9' AND V.CODI_PROGRAMACION = @CODI_PROGRAMACION									) AS RET,  
+		(select COUNT(1) from VENTA V WHERE FLAG_VENTA = '7' AND V.CODI_PROGRAMACION = @CODI_PROGRAMACION									) AS PAS,  
+		(select COUNT(1) from VENTA V WHERE FLAG_VENTA IN ('R','R1') AND V.CODI_PROGRAMACION = @CODI_PROGRAMACION							) AS RVA  
+	END
+
+	SET NOCOUNT OFF;
+END
+GO
