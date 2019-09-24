@@ -26,11 +26,25 @@ Begin
 		END;
 		ELSE IF(@tipoDocumento = '03') -- Cárnet de extranjería
 		BEGIN
-			EXEC Usp_venta_NotaCredPAS @ruc, @Fecha1, @Fecha2, @serie, @numero, @emp, @tipo; -- Busca: tipo_doc='03'
+			select nit_cliente,Fech_venta as fecha,V.id_venta,'16'as TpoDoc,V.serie_boleto as Serie ,V.nume_boleto as numero,V.cod_origen as Codi_PuntoVenta,
+			V.prec_venta-sum(isnull(importe,0))as total,V.tipo,'N' IngIgv,isnull(imp_manifiesto,'') imp_manifiesto
+			from venta V left join dbo.Tb_detalleNc ON V.id_venta = dbo.Tb_detalleNc.id_venta where Fech_venta>=@Fecha1 and Fech_venta<=@Fecha2 and dni=@ruc and
+			tipo_doc='03' and (V.serie_boleto=@serie or @serie=0)and (V.nume_boleto=@numero or @numero=0)   and not  flag_venta in ('8','9','Y','X','R','7','5')AND
+			(V.prec_venta-isnull(importe,0)) >0  and v.codi_empresa=@emp  and case when V.tipo='A' then 'M' else V.tipo end=@tipo and isnull(NIT_CLIENTE,'')='' AND INDI_ANULADO='F'
+			group by nit_cliente,Fech_venta ,V.id_venta,V.serie_boleto, V.nume_boleto,V.cod_origen,V.prec_venta,V.tipo,v.imp_manifiesto
+			having (V.prec_venta-sum(isnull(importe,0)))>0
 		END;
 		ELSE -- (@tipoDocumento = '07') -- Pasaporte
 		BEGIN
-			EXEC Usp_venta_NotaCredCext @ruc, @Fecha1, @Fecha2, @serie, @numero, @emp, @tipo; -- Busca: tipo_doc='07'
+			select nit_cliente,Fech_venta as fecha,V.id_venta,'16'as TpoDoc,V.serie_boleto as Serie,
+			V.nume_boleto as numero,V.cod_origen as Codi_PuntoVenta,V.prec_venta-sum(isnull(importe,0))     
+			as total,V.tipo,'N' IngIgv,isnull(imp_manifiesto,'') imp_manifiesto
+			from venta V left join dbo.Tb_detalleNc ON V.id_venta = dbo.Tb_detalleNc.id_venta where
+			Fech_venta>=@Fecha1 and Fech_venta<=@Fecha2 and dni=@ruc and tipo_doc='07' and (V.serie_boleto=@serie
+			or @serie=0)and (V.nume_boleto=@numero or @numero=0)   and not  flag_venta in ('8','9','Y','X','R','7','5')AND
+			(V.prec_venta-isnull(importe,0)) >0  and v.codi_empresa=@emp    and case when V.tipo='A' then 'M' else V.tipo end=@tipo and isnull(NIT_CLIENTE,'')=''
+			AND INDI_ANULADO='F' group by nit_cliente,Fech_venta ,V.id_venta,V.serie_boleto, V.nume_boleto,V.cod_origen,V.prec_venta,V.tipo,v.imp_manifiesto
+			having (V.prec_venta-sum(isnull(importe,0)))>0
 		END;
 	END;
 	ELSE -- (@tipoPasEnc = 'E') -- ENCOMIENDA
